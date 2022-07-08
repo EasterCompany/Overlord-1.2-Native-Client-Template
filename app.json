@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "new_overlord_client",
+    "slug": "new_overlord_client",
+    "version": "0.0.0",
+    "platforms": ["ios", "android", "web"],
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "scheme": "new_overlord_client://",
+    "updates": {
+      "enabled": false,
+      "fallbackToCacheTimeout": 999
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "notification": {
+      "androidMode": "collapse",
+      "androidCollapsedTitle": "new_overlord_client"
+    },
+    "ios": {
+      "bundleIdentifier": "com.eastercompany.new_overlord_client",
+      "buildNumber": "1.0.0",
+      "supportsTablet": true,
+      "requireFullScreen": false
+    },
+    "android": {
+      "package": "com.eastercompany.new_overlord_client",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
