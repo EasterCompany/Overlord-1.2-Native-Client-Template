@@ -8,8 +8,8 @@
     "web": "expo start --web",
     "ios": "expo start --ios",
     "android": "expo start --android",
-    "build": "expo build:web && rm -rf ../../static/new_overlord_client && mkdir -p ../../static/new_overlord_client && mv -i web-build/index.html web-build/index && mv -uf web-build/* ../../static/new_overlord_client",
-    "build-all": "expo build",
+    "build": "expo build:web && rm -rf ../../static/app-name && mkdir -p ../../static/app-name && mv -i web-build/index.html web-build/index && mv -uf web-build/* ../../static/app-name",
+    "build-all": "expo build && rm -rf ../../static/app-name && mkdir -p ../../static/app-name && mv -i web-build/index.html web-build/index && mv -uf web-build/* ../../static/app-name",
     "build-ios": "expo build:ios",
     "build-android": "expo build:android"
   },

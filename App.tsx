@@ -11,12 +11,12 @@ const App = () => <View style={styles.background}>
   <StatusBar style="auto" />
   <View style={styles.view}>
     <Text style={styles.normalHeader}>
-      You're ready to open up the 'App.tsx' file and start working on your app!
+      Edit the 'App.tsx' file to start building your new app!
     </Text>
 
     <Text style={styles.text}>
       Inside the terminal window running Overlord{'\n\n'}
-      Press 'W' to open the web-app{'\n'}
+      Press 'W' to open the web-app.{'\n'}
       Press 'A' to open the android-app.{'\n\n'}
     </Text>
 
