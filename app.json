@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "new_overlord_client",
-    "slug": "new_overlord_client",
+    "name": "app-name",
+    "slug": "app-name",
     "version": "0.0.0",
     "platforms": ["ios", "android", "web"],
     "orientation": "portrait",
@@ -12,7 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "scheme": "new_overlord_client://",
+    "scheme": "app-name",
     "updates": {
       "enabled": false,
       "fallbackToCacheTimeout": 999
@@ -22,16 +22,16 @@
     ],
     "notification": {
       "androidMode": "collapse",
-      "androidCollapsedTitle": "new_overlord_client"
+      "androidCollapsedTitle": "app-name"
     },
     "ios": {
-      "bundleIdentifier": "com.eastercompany.new_overlord_client",
+      "bundleIdentifier": "com.eastercompany.app-name",
       "buildNumber": "1.0.0",
       "supportsTablet": true,
       "requireFullScreen": false
     },
     "android": {
-      "package": "com.eastercompany.new_overlord_client",
+      "package": "com.eastercompany.app-name",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
