@@ -15,9 +15,9 @@ const App = () => <View style={styles.background}>
     </Text>
 
     <Text style={styles.text}>
-      Inside your terminal window running Overlord{'\n\n'}
+      Inside the terminal window running Overlord{'\n\n'}
       Press 'W' to open the web-app{'\n'}
-      Press 'A' to open the android-app in an emulator.{'\n'}
+      Press 'A' to open the android-app.{'\n\n'}
     </Text>
 
     <View style={styles.container}>
@@ -41,13 +41,13 @@ const App = () => <View style={styles.background}>
     </View>
 
     <Text style={[styles.text, {marginTop: 50}]}>
-      Part of the Overlord Framework
+      The Overlord Framework
     </Text>
 
     <Text style={styles.hyperlink} onPress={() => {
       Linking.openURL('https://github.com/EasterCompany/Overlord')
     }}>
-      (https://github.com/EasterCompany/Overlord)
+      https://github.com/EasterCompany/Overlord
     </Text>
   </View>
 </View>
