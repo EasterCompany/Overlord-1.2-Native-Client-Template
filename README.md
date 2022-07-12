@@ -38,13 +38,13 @@ To automatically install all your clients within your clients directory run the 
 or to manually specify the new native client you want to install.
 
 ```bash
-./o install -clients -[client_name_here]
+./o install -[client_name_here]
 ```
 
 for example;
 
 ```bash
-./o install -clients -my_new_project
+./o install -my_new_project
 ```
 
 
