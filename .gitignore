@@ -1,62 +1,11 @@
-# .gitignore
-#   This file is standardised across all Overlord clients and projects - however unlikely; it may be needed to add your
-#   own options. If you add your own options, please consider how this may affect your project as a whole.
-
-# Developer Envrionment
-.vscode/
-.idea/
-
-# Overlord (Files)
-/o
-*.key
-/web/urls.py
-api/migrations/*.py
-!api/migrations/__init__.py
-
-# Overlord (Directories)
-.logs/*
-.config/*
-.temp/*
-clients/*/build/*
-clients/*/src/shared/*
-static/*
-static/.temp/*
-static/assets/users/*
-build/
-# ---
-!static/e_panel/
-
-# Overlord (Clients)
-clients/
-!clients/e_panel/
-!clients/shared/
-
-# Sqlite (Files)
-*.sqlite3
-*.sqlite3-journal
-
-# Python (Temp)
-.pytest_cache
+# Generic
 __pycache__
-
-# Logs (Temp)
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# TypeScript (Temp)
-*.tsbuildinfo
-
-# NPM (Temp)
-.env
-/env
-.npm
-/npm
 node_modules/
 .expo/
 dist/
+web-build/
+.env
+.env.dev
 npm-debug.*
 *.jks
 *.p8
@@ -64,18 +13,9 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
-web-build/
 
-# ESlint (Temp)
-.eslintcache
-
-# Misc (Files)
+# macOS
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*
