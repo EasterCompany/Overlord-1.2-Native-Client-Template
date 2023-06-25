@@ -3,7 +3,7 @@
 */
 import React from 'react';
 import { Pressable, Image } from 'react-native';
-import { theme } from '../../App';
+import theme from '../../App.style';
 
 
 const ImgBtn = ({ onPress, style, image, width, height } : any) => <Pressable

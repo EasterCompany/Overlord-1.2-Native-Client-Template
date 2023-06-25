@@ -3,7 +3,7 @@
 */
 import React from 'react';
 import { View, Text, TouchableOpacity, Linking } from 'react-native';
-import { theme } from '../../App';
+import theme from '../../App.style';
 
 
 const LinkBtn = ({link, text, style, children} : any) => <View>

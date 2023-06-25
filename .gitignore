@@ -1,21 +1,39 @@
+# .gitignore
+#  Standardised Overlord Native Client gitingore file
+#  You may need to add your own exceptions
+
 # Generic
-__pycache__
-node_modules/
 .expo/
 dist/
-web-build/
-.env
-.env.dev
-npm-debug.*
 *.jks
 *.p8
 *.p12
 *.key
 *.mobileprovision
 *.orig.*
+.metro-health-check*
+*~
+
+# Developer
+.vscode/
+.idea/
+
+# Python
+.pytest_cache
+__pycache__
+
+# Node & NPM
+.env
+.env.*
+build/
+web-build/
+node_modules/
+npm-debug.*
+*.tsbuildinfo
+*.log
 
 # macOS
 .DS_Store
 
-# Temporary files created by Metro to check the health of the file watcher
-.metro-health-check*
+# Shared
+src/shared/*

@@ -1,16 +1,11 @@
-/*
-  @types
-  :FadeModal props:
-    :title: string
-    :state: [ stateVariable, setStateFunction ]
-*/
 import React from 'react';
 import { Modal, View, Text, Platform, Dimensions } from 'react-native';
-import { theme } from '../../App';
 // Assets
 import closeImg from '../../assets/images/close.png';
 // Components
 import ImgBtn from '../buttons/img';
+// Styles
+import theme from '../../App.style';
 
 
 const FadeModal = ({ title, visible, onClose, children } : any) => {

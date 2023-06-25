@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import navbar from './navbar.styles';
+import navbar from './navbar.style';
 import menuImg from '../../assets/images/menu.png';
 import userImg from '../../assets/images/user.png';
 import logoImg from '../../assets/images/logo.png';

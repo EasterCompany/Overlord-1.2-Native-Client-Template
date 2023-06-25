@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, Image, Platform, StyleSheet } from 'react-native';
+import { REACT_APP_NAME } from 'env';
 // Assets
 import ReactPNG from '../../assets/images/react.png';
 import ReactSVG from '../../assets/svgs/react.svg';
@@ -17,7 +18,7 @@ const Tutorial = () => <View>
   <View style={tutorial.headerSection}>
     <View>
       <Text style={tutorial.welcomeText}>Welcome to your new Overlord Native Client,</Text>
-      <Text style={tutorial.clientName}>{process.env.REACT_APP_NAME}</Text>
+      <Text style={tutorial.clientName}>{REACT_APP_NAME}</Text>
     </View>
   </View>
   <View style={tutorial.container}>
@@ -84,7 +85,8 @@ const tutorial = StyleSheet.create({
     textAlign: 'center',
     color: '#ffff',
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textTransform: 'uppercase'
   },
 
   container: {

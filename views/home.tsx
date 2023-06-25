@@ -1,7 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-import { theme } from '../App';
+// Components
 import Tutorial from '../components/example/tutorialButtons';
+// Styles
+import theme from '../App.style';
 
 
 const Home = ({ window } : any) => {
