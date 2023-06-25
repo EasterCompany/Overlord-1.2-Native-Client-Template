@@ -7,21 +7,6 @@ const theme = StyleSheet.create({
     backgroundColor: '#202029',
   },
 
-  background: {
-    height: '100%',
-    backgroundColor: '#263238',
-    pointerEvents: 'none'
-  },
-
-  view: {
-    flex: 1,
-    maxWidth: 999,
-    margin: 'auto',
-    alignItems: 'center',
-    justifyContent: 'center',
-    pointerEvents: 'auto'
-  },
-
   text: {
     color: '#ffff',
     textAlign: 'left',
@@ -38,7 +23,7 @@ const theme = StyleSheet.create({
     fontSize: 15
   },
 
-  normalHeader: {
+  header: {
     color: '#ffff',
     textAlign: 'center',
     fontWeight: 'normal',
@@ -52,12 +37,6 @@ const theme = StyleSheet.create({
     fontWeight: 'bold',
     margin: '5%',
     fontSize: 22
-  },
-
-  container: {
-    width: '90%',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 
   /*
@@ -86,7 +65,7 @@ const theme = StyleSheet.create({
     textTransform: 'uppercase',
   },
 
-  imageButton: {
+  ImgBtn: {
     backgroundColor: 'rgba(0,0,0,0)',
     pointerEvents: 'auto'
   },
@@ -105,9 +84,9 @@ const theme = StyleSheet.create({
     marginRight: 'auto',
     padding: 25,
     elevation: 5,
-    borderBottomLeftRadius: 6,
-    borderBottomRightRadius: 6,
-    backgroundColor: '#28282f',
+    borderBottomLeftRadius: Platform.OS === 'web' ? 6 : 0,
+    borderBottomRightRadius: Platform.OS === 'web' ? 6 : 0,
+    backgroundColor: '#E5E7EB',
   },
 
   modalHeader: {
@@ -119,7 +98,9 @@ const theme = StyleSheet.create({
     height: 48,
     marginLeft: 'auto',
     marginRight: 'auto',
-    backgroundColor: '#17171c'
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+    backgroundColor: '#282C34'
   },
 
   modalTitle: {
@@ -128,41 +109,6 @@ const theme = StyleSheet.create({
     marginLeft: '2.5%',
     userSelect: 'none',
   },
-
-  /*
-    --------------------------- MENU STYLES ----------------------------------------------------------------------------
-  */
-
-  sideMenu: {
-    width: '100%',
-    height: '100%',
-    flexDirection: 'column',
-    backgroundColor: 'white',
-    borderRadius: 5,
-    padding: 25,
-    alignItems: 'center',
-    shadowColor: '#0000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 2.5,
-    elevation: 5
-  },
-
-  sideMenuHeader: {
-    width: '100%',
-    marginLeft: 'auto',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-
-  sideMenuTitle: {
-    fontSize: 22,
-    marginTop: 16,
-    marginLeft: '5%'
-  }
 
 });
 

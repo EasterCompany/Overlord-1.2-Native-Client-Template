@@ -29,6 +29,7 @@ build/
 web-build/
 node_modules/
 npm-debug.*
+package-lock.json
 *.tsbuildinfo
 *.log
 

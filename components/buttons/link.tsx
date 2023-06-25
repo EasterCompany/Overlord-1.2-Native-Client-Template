@@ -1,19 +1,27 @@
-/*
-  The LinkButton component is used to open a URL/URI within the browser when the button is pressed or touched
-*/
-import React from 'react';
-import { View, Text, TouchableOpacity, Linking } from 'react-native';
+// Library
+import { useState } from 'react';
+import { View, Text, Pressable, Linking } from 'react-native';
+// Styles
 import theme from '../../App.style';
 
 
-const LinkBtn = ({link, text, style, children} : any) => <View>
-  <TouchableOpacity
-    style={style === undefined ? theme.button : style}
+const LinkBtn = ({ text, style, onHover, onPress, link, children} : any) => {
+  const [ isHover, setHover ] = useState(false);
+  const [ isPress, setPress ] = useState(false);
+  return <Pressable
+    style={[
+      style === undefined ? theme.button : style,
+      isHover ? onHover : undefined,
+      isPress ? onPress : undefined
+    ]}
     onPress={() => {Linking.openURL(link);}}
-  >{
-    children === undefined ? <Text style={theme.buttonText}>{text}</Text> : children
-  }</TouchableOpacity>
-</View>;
-
+    onHoverIn={() => setHover(true)}
+    onHoverOut={() => setHover(false)}
+    onPressIn={() => setPress(true)}
+    onPressOut={() => setPress(false)}
+  >
+    {children === undefined ? <Text style={theme.buttonText}>{text}</Text> : children}
+  </Pressable>
+}
 
 export default LinkBtn;

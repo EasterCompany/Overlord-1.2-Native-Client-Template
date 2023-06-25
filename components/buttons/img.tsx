@@ -1,17 +1,13 @@
-/*
-  The ImgBtn component is used to display a clickable image
-*/
-import React from 'react';
+// Library
 import { Pressable, Image } from 'react-native';
+// Styles
 import theme from '../../App.style';
 
 
 const ImgBtn = ({ onPress, style, image, width, height } : any) => <Pressable
-  style={[theme.imageButton, style]}
+  style={[theme.ImgBtn, style]}
   onPress={onPress}
->
-  <Image source={image} style={{ width:width, height:height }}/>
-</Pressable>;
+><Image source={image} style={{ width:width, height:height }}/></Pressable>;
 
 
 export default ImgBtn;

@@ -1,4 +1,4 @@
-import React from 'react';
+// Library
 import { View } from 'react-native';
 // Components
 import Tutorial from '../components/example/tutorialButtons';

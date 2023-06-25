@@ -1,4 +1,4 @@
-import React from 'react';
+// Library
 import { Modal, View, Text, Dimensions, Platform } from 'react-native';
 // Assets
 import closeImg from '../../assets/images/close.png';

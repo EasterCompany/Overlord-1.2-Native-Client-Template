@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// Library
+import { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -10,6 +11,8 @@ import {
 // Components
 import Navbar from './components/header/navbar';
 import FadeModal from './components/modals/fade';
+import SideMenu from './components/header/sideMenu';
+import NavMenuContent from './components/header/navMenuContent';
 // Views
 import Home from './views/home';
 // Styles
@@ -27,8 +30,8 @@ const App = () => {
     screen: screenDimensions,
   });
 
-  const toggleNavMenu = () => setNavMenu(!navMenu);
-  const toggleUserMenu = () => setUserMenu(!userMenu);
+  const toggleNavMenu = () => {setNavMenu(!navMenu);setUserMenu(false);}
+  const toggleUserMenu = () => {setUserMenu(!userMenu);setNavMenu(false);}
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({window, screen}) => {
@@ -38,25 +41,14 @@ const App = () => {
   }, [ dimensions.window, dimensions.screen ]);
 
   return <>
-    <StatusBar
-      barStyle={'light-content'}
-      backgroundColor={'#202029'}
-    />
+    <StatusBar barStyle={'light-content'} backgroundColor={'#202029'}/>
     <View>
-      <Navbar userBtnToggle={() => setUserMenu(!userMenu)} navBtnToggle={() => setNavMenu(!navMenu)}/>
+      <Navbar userBtnToggle={toggleUserMenu} navBtnToggle={toggleNavMenu} navMenuState={navMenu}/>
       <ScrollView>
         <Home window={dimensions.window}/>
       </ScrollView>
-      <FadeModal
-        title="Navigations"
-        visible={navMenu}
-        onClose={toggleNavMenu}
-      />
-      <FadeModal
-        title="Login"
-        visible={userMenu}
-        onClose={toggleUserMenu}
-      />
+      <FadeModal title="Login" visible={userMenu} onClose={toggleUserMenu}/>
+      { navMenu ? <SideMenu window={dimensions.window}><NavMenuContent/></SideMenu> : <></> }
     </View>
   </>;
 };

@@ -10,7 +10,7 @@ const header = StyleSheet.create({
         width: '100%',
         minHeight: 52,
         padding: '2.5%',
-        paddingTop: '1%',
+        paddingTop: '0.75%',
         paddingBottom: '1%',
         backgroundColor: '#202029'
     },

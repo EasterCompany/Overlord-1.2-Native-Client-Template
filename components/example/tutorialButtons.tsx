@@ -1,4 +1,4 @@
-import React from 'react';
+// Library
 import { Text, View, Image, Platform, StyleSheet } from 'react-native';
 import { REACT_APP_NAME } from 'env';
 // Assets
@@ -50,20 +50,15 @@ const Tutorial = () => <View>
 </View>;
 
 
-const LearnBtn = ({ text, link, png, svg } : any) => {
-  return <LinkBtn
-    link={link}
-    style={tutorial.linkBtn}
-  >
-    <Image
-      source={Platform.OS === 'web' ? svg : png}
-      style={tutorial.image}
-    />
-    <Text style={tutorial.text}>
-      {text}
-    </Text>
-  </LinkBtn>
-}
+const LearnBtn = ({ text, link, png, svg } : any) => <LinkBtn
+  link={link}
+  style={tutorial.linkBtn}
+  onHover={{backgroundColor: 'rgba(175,175,175,0.2)'}}
+  onPress={{opacity: '25%'}}
+>
+  <Image source={Platform.OS === 'web' ? svg : png} style={tutorial.image}/>
+  <Text style={tutorial.text}>{text}</Text>
+</LinkBtn>
 
 
 const tutorial = StyleSheet.create({
