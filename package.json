@@ -5,7 +5,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "env-cmd -f .env.dev npx expo start --clear",
-    "build": "npx expo export:web"
+    "build": "env-cmd -f .env npx expo export:web"
   },
   "dependencies": {
     "@babel/core": "^7.20.0",
