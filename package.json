@@ -1,7 +1,7 @@
 {
-  "name": "app-name",
+  "name": "overlord_native_client",
   "version": "0.0.0",
-  "homepage": "/static/app-name",
+  "homepage": "/static/overlord_native_client",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "env-cmd -f .env.dev npx expo start --clear",
