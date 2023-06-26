@@ -24,7 +24,8 @@
       }
     },
     "web": {
-      "favicon": "./assets/images/logo_white.png"
+      "favicon": "./assets/images/logo_white.png",
+      "publicPath": "/static/app-name"
     }
   }
 }
