@@ -14,9 +14,9 @@ import ePanelSVG from '../../assets/svgs/epanel.svg';
 import LinkBtn from '../buttons/link';
 
 
-const Tutorial = () => <View>
+const Tutorial = () => <>
   <View style={tutorial.headerSection}>
-    <View>
+    <View style={{ marginLeft: 18, marginRight: 18 }}>
       <Text style={tutorial.welcomeText}>Welcome to your new Overlord Native Client,</Text>
       <Text style={tutorial.clientName}>{REACT_APP_NAME}</Text>
     </View>
@@ -47,7 +47,7 @@ const Tutorial = () => <View>
       link="https://easter.company/overlord/epanel"
     />
   </View>
-</View>;
+</>;
 
 
 const LearnBtn = ({ text, link, png, svg } : any) => <LinkBtn

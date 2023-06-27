@@ -9,9 +9,9 @@ const header = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         minHeight: 52,
-        padding: '2.5%',
-        paddingTop: '0.75%',
-        paddingBottom: '1%',
+        height: 52,
+        maxHeight: 52,
+        padding: '2%',
         backgroundColor: '#202029'
     },
 

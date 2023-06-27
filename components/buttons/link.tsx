@@ -10,7 +10,7 @@ const LinkBtn = ({ text, style, onHover, onPress, link, children} : any) => {
   const [ isPress, setPress ] = useState(false);
   return <Pressable
     style={[
-      style === undefined ? theme.button : style,
+      style ? style : theme.button,
       isHover ? onHover : undefined,
       isPress ? onPress : undefined
     ]}
@@ -23,5 +23,6 @@ const LinkBtn = ({ text, style, onHover, onPress, link, children} : any) => {
     {children === undefined ? <Text style={theme.buttonText}>{text}</Text> : children}
   </Pressable>
 }
+
 
 export default LinkBtn;

@@ -1,23 +1,31 @@
 // Library
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 // Components
 import Tutorial from '../components/example/tutorialButtons';
 // Styles
 import theme from '../App.style';
 
 
-const Home = ({ window } : any) => {
-  return <View style={{
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: window.width,
-    minHeight: window.height,
-    paddingTop: 25,
-    paddingBottom: 125,
-    backgroundColor: theme.default.backgroundColor
-  }}>
+const Home = ({ view } : any) => {
+  return <ScrollView
+    style={{
+      width: view.width,
+      height: view.height,
+    }}
+    contentContainerStyle={{
+      alignItems: 'center',
+      justifyContent: 'center',
+      maxWidth: view.width,
+      minHeight: view.height,
+      paddingTop: 25,
+      paddingLeft: 4,
+      paddingRight: 4,
+      paddingBottom: 125,
+      backgroundColor: theme.default.backgroundColor
+    }}
+  >
     <Tutorial/>
-  </View>;
+  </ScrollView>;
 };
 
 

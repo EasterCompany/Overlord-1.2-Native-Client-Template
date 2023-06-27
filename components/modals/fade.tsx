@@ -1,5 +1,5 @@
 // Library
-import { Modal, View, Text, Platform, Dimensions } from 'react-native';
+import { Modal, View, ScrollView, Text, Platform, Dimensions } from 'react-native';
 // Assets
 import closeImg from '../../assets/images/close.png';
 // Components
@@ -8,7 +8,7 @@ import ImgBtn from '../buttons/img';
 import theme from '../../App.style';
 
 
-const FadeModal = ({ title, visible, onClose, children } : any) => {
+const FadeModal = ({ title, visible, onClose, style, children } : any) => {
   const screen = Dimensions.get('screen');
   return <Modal
   animationType="fade"
@@ -20,7 +20,7 @@ const FadeModal = ({ title, visible, onClose, children } : any) => {
       top: Platform.OS === 'web' ? screen.height * 0.1 : 0,
       height: Platform.OS === 'web' ? '70%' : '100%'
     }}>
-      <View style={[ theme.modalHeader, { boxShadow: '1px 1px 10px rgba(0,0,0,.66)' } ]}>
+      <View style={theme.modalHeader}>
         <Text style={theme.modalTitle}>
           {title}
         </Text>
@@ -32,7 +32,7 @@ const FadeModal = ({ title, visible, onClose, children } : any) => {
           image={closeImg}
         />
       </View>
-      <View style={[ theme.modalContent, { boxShadow: '1px 1px 10px rgba(0,0,0,.66)' } ]}>
+      <View style={[ theme.modalContent, style ]}>
         {children}
       </View>
     </View>

@@ -7,16 +7,81 @@ const theme = StyleSheet.create({
     backgroundColor: '#202029',
   },
 
+  alt: {
+    color: '#202029',
+    backgroundColor: '#E5E7EB'
+  },
+
   text: {
     color: '#ffff',
     textAlign: 'left',
-    fontWeight: '300',
+    fontWeight: 300,
     margin: '2%',
     fontSize: 16
   },
 
+  error: {
+    color: '#ffff',
+    textAlign: 'center',
+    backgroundColor: 'red',
+    width: '100%',
+    padding: 6,
+    maxWidth: 420,
+    borderRadius: 4
+  },
+
+  loginInputContainer: {
+    width: '95%',
+    maxWidth: 420,
+    height: 84,
+    marginBottom: 16,
+    borderRadius: 8,
+    backgroundColor: '#ffff'
+  },
+
+  loginInputIconContainer: {
+    zIndex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: '100%',
+    height: 32,
+    paddingTop: 12,
+    backgroundColor: 'transparent'
+  },
+
+  loginInputIcon: {
+    width: 24,
+    height: 16,
+    marginTop: 'auto',
+    marginLeft: 12,
+    marginBottom: 'auto',
+    marginRight: 6,
+    padding: 0
+  },
+
+  loginInputLabel: {
+    userSelect: 'none',
+    fontSize: 12,
+    fontWeight: 'bold'
+  },
+
+  loginInput: {
+    zIndex: 0,
+    userSelect: 'none',
+    color: '#202029',
+    width: '100%',
+    height: 84,
+    fontSize: 18,
+    marginTop: -32,
+    paddingTop: 28,
+    paddingLeft: 16,
+    borderRadius: 8,
+    backgroundColor: 'transparent'
+  },
+
   hyperlink: {
-    color: '#75C0E0',
+    color: '#3996CF',
+    width: '100%',
     textAlign: 'left',
     fontWeight: '300',
     margin: '2%',
@@ -28,15 +93,15 @@ const theme = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'normal',
     margin: '5%',
-    fontSize: 22
+    fontSize: 32
   },
 
   boldHeader: {
-    color: 'white',
+    color: '#ffff',
     textAlign: 'center',
     fontWeight: 'bold',
     margin: '5%',
-    fontSize: 22
+    fontSize: 32
   },
 
   /*
@@ -44,24 +109,31 @@ const theme = StyleSheet.create({
   */
 
   button: {
-    elevation: 5,
-    backgroundColor: '#009688',
-    borderRadius: 10,
-    marginTop: 15,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    width: '90%',
-    shadowColor: '#0000',
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    pointerEvents: 'auto'
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: 48,
+    padding: 6,
+    borderWidth: 1,
+    borderRadius: 6,
+    borderColor: '#FE8605',
+    backgroundColor: '#FE8605',
+  },
+
+  buttonHover: {
+    opacity: '75%'
+  },
+
+  buttonPress: {
+    opacity: '25%'
   },
 
   buttonText: {
-    color: '#ffff',
-    fontSize: 15,
-    fontWeight: 'bold',
+    userSelect: 'none',
     alignSelf: 'center',
+    color: '#ffff',
+    fontSize: 16,
+    fontWeight: 'bold',
     textTransform: 'uppercase',
   },
 
@@ -87,6 +159,7 @@ const theme = StyleSheet.create({
     borderBottomLeftRadius: Platform.OS === 'web' ? 6 : 0,
     borderBottomRightRadius: Platform.OS === 'web' ? 6 : 0,
     backgroundColor: '#E5E7EB',
+    boxShadow: '1px 1px 10px rgba(0,0,0,.66)'
   },
 
   modalHeader: {
@@ -100,14 +173,15 @@ const theme = StyleSheet.create({
     marginRight: 'auto',
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
-    backgroundColor: '#282C34'
+    backgroundColor: '#282C34',
+    boxShadow: '1px 1px 10px rgba(0,0,0,.66)'
   },
 
   modalTitle: {
     color: '#ffff',
     fontSize: 22,
     marginLeft: '2.5%',
-    userSelect: 'none',
+    userSelect: 'none'
   },
 
 });

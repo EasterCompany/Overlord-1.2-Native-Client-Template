@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 // Components
 import Navbar from './components/header/navbar';
-import FadeModal from './components/modals/fade';
+import LoginModal from './components/modals/login';
+import RegisterModal from './components/modals/register';
 import SideMenu from './components/header/sideMenu';
 import NavMenuContent from './components/header/navMenuContent';
 // Views
@@ -25,17 +26,29 @@ const screenDimensions = Dimensions.get('screen');
 const App = () => {
   const [navMenu, setNavMenu] = useState<boolean>(false);
   const [userMenu, setUserMenu] = useState<boolean>(false);
+  const [loginModal, setLoginModal] = useState<boolean>(false);
+  const [registerModal, setRegisterModal] = useState<boolean>(false);
   const [dimensions, setDimensions] = useState<any>({
     window: windowDimensions,
+    view: {
+      width: windowDimensions.width,
+      height: windowDimensions.height - 52
+    },
     screen: screenDimensions,
   });
 
-  const toggleNavMenu = () => {setNavMenu(!navMenu);setUserMenu(false);}
+  const toggleNavMenu = () => {setNavMenu(!navMenu);setUserMenu(false);setLoginModal(false);setRegisterModal(false);}
   const toggleUserMenu = () => {setUserMenu(!userMenu);setNavMenu(false);}
+  const toggleLoginModal = () => {setLoginModal(!loginModal);setNavMenu(false);setRegisterModal(false);}
+  const toggleRegisterModal = () => {setRegisterModal(!registerModal);setNavMenu(false);setLoginModal(false);}
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({window, screen}) => {
-      setDimensions({window, screen});
+      setDimensions({
+        window,
+        view: { width: window.width, height: window.height - 52 },
+        screen
+      });
     });
     return () => subscription?.remove();
   }, [ dimensions.window, dimensions.screen ]);
@@ -43,11 +56,21 @@ const App = () => {
   return <>
     <StatusBar barStyle={'light-content'} backgroundColor={'#202029'}/>
     <View>
-      <Navbar userBtnToggle={toggleUserMenu} navBtnToggle={toggleNavMenu} navMenuState={navMenu}/>
-      <ScrollView>
-        <Home window={dimensions.window}/>
-      </ScrollView>
-      <FadeModal title="Login" visible={userMenu} onClose={toggleUserMenu}/>
+      {/* GUI Elements */}
+      <Navbar
+        loginBtn={toggleLoginModal}
+        registerBtn={toggleRegisterModal}
+        userBtn={toggleUserMenu}
+        navBtn={toggleNavMenu}
+        navMenuState={navMenu}
+      />
+
+      {/* Current View */}
+      <Home view={dimensions.view}/>
+
+      {/* Modals & Overlays */}
+      <LoginModal visible={loginModal} onClose={toggleLoginModal}/>
+      <RegisterModal visible={registerModal} onClose={toggleRegisterModal}/>
       { navMenu ? <SideMenu window={dimensions.window}><NavMenuContent/></SideMenu> : <></> }
     </View>
   </>;
