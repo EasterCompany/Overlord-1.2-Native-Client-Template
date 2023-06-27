@@ -8,6 +8,7 @@ import {
   Dimensions,
   Platform
 } from 'react-native';
+import { USER, isLoggedIn } from './shared/library/api';
 // Components
 import Navbar from './components/header/navbar';
 import LoginModal from './components/modals/login';
@@ -24,6 +25,7 @@ const screenDimensions = Dimensions.get('screen');
 
 
 const App = () => {
+  const [userData, setUserData] = useState<any>(USER());
   const [navMenu, setNavMenu] = useState<boolean>(false);
   const [userMenu, setUserMenu] = useState<boolean>(false);
   const [loginModal, setLoginModal] = useState<boolean>(false);
@@ -69,9 +71,11 @@ const App = () => {
       <Home view={dimensions.view}/>
 
       {/* Modals & Overlays */}
-      <LoginModal visible={loginModal} onClose={toggleLoginModal}/>
-      <RegisterModal visible={registerModal} onClose={toggleRegisterModal}/>
-      { navMenu ? <SideMenu window={dimensions.window}><NavMenuContent/></SideMenu> : <></> }
+      {isLoggedIn() ? <></> : <>
+        <LoginModal visible={loginModal} onClose={toggleLoginModal} onLogin={() => setUserData(USER())}/>
+        <RegisterModal visible={registerModal} onClose={toggleRegisterModal}/>
+      </>}
+      {navMenu ? <SideMenu window={dimensions.window}><NavMenuContent/></SideMenu> : <></>}
     </View>
   </>;
 };
