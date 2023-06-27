@@ -1,5 +1,5 @@
 // Library
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { isLoggedIn } from '../../shared/library/api';
 // Assets
 import menuImg from '../../assets/images/menu.png';
@@ -15,7 +15,9 @@ import navbar from './navbar.style';
 
 
 const Navbar = ({loginBtn, registerBtn, userBtn, navBtn, navMenuState}:any) => {
-  return <View style={navbar.container}>
+  return isLoggedIn() ?       // Not logged in
+
+  <View style={navbar.container}>
     <ImgBtn
       style={navbar.icon}
       onPress={navBtn}
@@ -23,36 +25,28 @@ const Navbar = ({loginBtn, registerBtn, userBtn, navBtn, navMenuState}:any) => {
       height={32}
       image={navMenuState ? closeImg : menuImg}
     />
-    {
-      isLoggedIn() ?
-        <>
-          <ImgBtn
-            style={navbar.icon}
-            width={32}
-            height={32}
-            image={logoImg}
-          />
-          <ImgBtn
-            style={navbar.icon}
-            onPress={userBtn}
-            width={32}
-            height={32}
-            image={userImg}
-          />
-        </>
-      :
-        <View style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: 225,
-          height: '100%'
-        }}>
-          <RegisterBtn onPress={registerBtn}/>
-          <LoginBtn onPress={loginBtn}/>
-        </View>
-    }
-  </View>;
+    <ImgBtn
+      style={navbar.icon}
+      width={32}
+      height={32}
+      image={logoImg}
+    />
+    <ImgBtn
+      style={navbar.icon}
+      onPress={userBtn}
+      width={32}
+      height={32}
+      image={userImg}
+    />
+  </View>
+
+  :                           // Is logged in
+
+  <View style={[ navbar.container, Platform.OS === 'web' ? { justifyContent: 'right' } : {} ]}>
+    <RegisterBtn onPress={registerBtn}/>
+    { Platform.OS === 'web' ? <View style={{ marginLeft: 24 }} /> : <></> }
+    <LoginBtn onPress={loginBtn}/>
+  </View>
 }
 
 

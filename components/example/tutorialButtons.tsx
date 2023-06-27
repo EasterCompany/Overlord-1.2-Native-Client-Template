@@ -104,6 +104,7 @@ const tutorial = StyleSheet.create({
   },
 
   text: {
+    userSelect: 'none',
     color: '#ffff',
     marginTop: 16,
     textAlign: 'center'

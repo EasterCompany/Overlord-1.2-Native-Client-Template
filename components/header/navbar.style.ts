@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 const header = StyleSheet.create({
 
     container: {
+        textAlignVertical: 'center',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
@@ -11,7 +12,8 @@ const header = StyleSheet.create({
         minHeight: 52,
         height: 52,
         maxHeight: 52,
-        padding: '2%',
+        paddingLeft: 24,
+        paddingRight: 24,
         backgroundColor: '#202029'
     },
 

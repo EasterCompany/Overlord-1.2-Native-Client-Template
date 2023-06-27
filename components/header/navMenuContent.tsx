@@ -29,6 +29,7 @@ const Option = ({ text, link, last } : any) => <LinkBtn
 const navMenu = StyleSheet.create({
 
   header: {
+    userSelect: 'none',
     color: 'rgba(200,200,200,1)',
     fontSize: 18,
     marginTop: 32,
@@ -56,6 +57,7 @@ const navMenu = StyleSheet.create({
   },
 
   optionText: {
+    userSelect: 'none',
     color: '#ffff',
     fontSize: 16
   }
