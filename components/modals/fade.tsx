@@ -32,9 +32,10 @@ const FadeModal = ({ title, visible, onClose, style, children } : any) => {
           image={closeImg}
         />
       </View>
-      <View style={[ theme.modalContent, style ]}>
-        {children}
-      </View>
+      <ScrollView
+        style={{ width: '100%' }}
+        contentContainerStyle={[ theme.modalContent, style ]}
+      >{children}</ScrollView>
     </View>
   </Modal>;
 }

@@ -92,7 +92,7 @@ const theme = StyleSheet.create({
     color: '#ffff',
     textAlign: 'center',
     fontWeight: 'normal',
-    margin: '5%',
+    margin: '4%',
     fontSize: 32
   },
 
@@ -100,8 +100,16 @@ const theme = StyleSheet.create({
     color: '#ffff',
     textAlign: 'center',
     fontWeight: 'bold',
-    margin: '5%',
+    margin: '4%',
     fontSize: 32
+  },
+
+  subtext: {
+    color: '#0000',
+    textAlign: 'center',
+    fontWeight: 200,
+    margin: '1%',
+    fontSize: 12
   },
 
   /*
@@ -148,13 +156,14 @@ const theme = StyleSheet.create({
 
   modalContent: {
     alignItems: 'center',
+    justifyContent: 'center',
     flexDirection: 'column',
+    overflowX: 'hidden',
     width: Platform.OS === 'web' ? '100%' : '100%',
     maxWidth: Platform.OS === 'web' ? 1024 : '100%',
     height: '100%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    padding: 25,
     elevation: 5,
     borderBottomLeftRadius: Platform.OS === 'web' ? 6 : 0,
     borderBottomRightRadius: Platform.OS === 'web' ? 6 : 0,

@@ -1,6 +1,7 @@
 // Library
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
+  Animated,
   View,
   ScrollView,
   Text,
@@ -9,64 +10,150 @@ import {
   Pressable,
   ActivityIndicator
 } from 'react-native';
-import { login } from '../../shared/library/api';
+import { login, oapi } from '../../shared/library/api';
 // Assets
-import EmailIcon from '../../assets/images/email.png';
-import PasswordIcon from '../../assets/images/key.png';
+import UserIcon from '../../assets/images/user_black.png';
 // Components
 import FadeModal from './fade';
-import TextBtn from '../buttons/text';
+import InputText from '../inputs/text';
+import InputDate from '../inputs/date';
 import { EmailInput, PasswordInput, SubmitBtn } from './login';
 // Styles
 import theme from '../../App.style';
 
 
-const RegisterModal = ({ visible, onClose, onRegister } : any) => {
+const RegisterModal = ({ view, visible, onClose, onRegister } : any) => {
   const [ isLoading, setLoading ] = useState<boolean>(false);
+  const [ currentStep, setCurrentStep ] = useState<number>(1);
   const [ registerFailed, setRegisterFailed ] = useState<string>("");
-  const registerInput = useRef<object>({
+  const [ emailIsValid, setEmailIsValid ] = useState(null);
+  const [ passwordIsValid, setPasswordIsValid ] = useState(null);
+  const slideAnim = useRef(new Animated.Value(0)).current;
+  const input = useRef<object>({
     email: '',
-    password: ''
-  });
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: '',
+    d: '',
+    m: '',
+    y: ''
+  }).current;
+
+  useEffect(() => {
+    if (emailIsValid && passwordIsValid) {
+      Animated.timing(slideAnim, {
+        toValue: 0 - screen.width, duration: 750, useNativeDriver: false
+      }).start()
+      setCurrentStep(2);
+    }
+  }, [ slideAnim, emailIsValid, passwordIsValid ]);
+
+  const validateEmail = () => {
+    if (input.email === '') return setEmailIsValid(null);
+    if (!input.email.includes('@')) return setEmailIsValid(false);
+    const p1 = input.email.split('@')
+    if (!p1[0].length > 0 || !p1[1].includes('.')) return setEmailIsValid(false);
+    const p2 = p1[1].split('.')
+    if (!p2[0].length > 0 || !p2[1].length > 0) return setEmailIsValid(false);
+    return setEmailIsValid(true);
+  };
+
+  const validatePasswords = () => {
+    if (input.password === '' || input.confirmPassword === '') {
+      return setPasswordIsValid(null);
+    } else if (input.password === input.confirmPassword && input.password.length >= 8) {
+      return setPasswordIsValid(true);
+    }
+    return setPasswordIsValid(false);
+  };
+
+  const updateEmail = (text:string) => {
+    input.email = text; validateEmail();
+  };
+
+  const updatePassword = (text:string) => {
+    input.password = text; validatePasswords();
+  };
+
+  const updateConfirmPassword = (text:string) => {
+    input.confirmPassword = text; validatePasswords();
+  };
+
+  const onSubmit = () => {
+    if (currentStep === 1) {
+      if (!emailIsValid)
+        return setRegisterFailed("A valid email address is required.");
+      else if (!passwordIsValid)
+        return setRegisterFailed("Passwords must match & be greater than 8 characters in length.");
+      else
+        setRegisterFailed(null);
+        return setCurrentStep(2);
+    } else if (currentStep === 2) {
+      setLoading(true);
+      oapi(
+        'user/create',
+        (resp) => {setRegisterFailed(resp);setLoading(false);},
+        (resp) => {
+          login(
+            (resp) => {
+              setLoading(false);
+              setRegisterFailed("Sorry, there was a problem logging in.");
+            },
+            (resp) => {
+              onRegister();
+              setLoading(false);
+              onClose();
+            },
+            input.email,
+            input.password,
+          )
+        },
+        {
+          email: input.email,
+          password: input.password,
+          first_name: input.firstName,
+          last_name: input.lastName,
+          date_of_birth: `${input.d}/${input.m}/${input.y}`
+        }
+      )
+    }
+  }
+
+  const ErrorMessage = () => registerFailed.length > 0 ? <View style={theme.error}>
+    <Text style={theme.error}>{registerFailed}</Text>
+  </View> : <></>
 
   return <FadeModal title="New Account" visible={visible} onClose={onClose}>
-   <ScrollView style={{ width: '100%' }} contentContainerStyle={{ alignItems: 'center' }}>
-      <ActivityIndicator animating={isLoading} color="black"/>
-      <Text style={[ theme.boldHeader, { userSelect: 'none', color: theme.alt.color } ]}>Sign Up</Text>
-      <EmailInput/>
-      <PasswordInput label="Password"/>
-      <PasswordInput label="Confirm Password"/>
+    { isLoading ? <ActivityIndicator animating={isLoading} color="black"/> : <></> }
+    <Text style={[ theme.boldHeader, { userSelect: 'none', color: theme.alt.color, marginTop: 0 } ]}>Sign Up</Text>
+    <Text style={[ theme.subtext ], { marginTop: '-2%', marginBottom: '2%' }}>({currentStep}/2)</Text>
+    <Animated.View style={{ flexDirection: 'row', left: slideAnim }}>
 
-      {/* Registration Failed Message */}
-      {registerFailed.length > 0 ? <View style={theme.error}>
-        <Text style={theme.error}>{registerFailed}</Text>
-      </View> : <></>}
-
-      {/* Submit Registration Forum */}
-      <View style={{ alignItems: 'center', width: '100%', maxWidth: 420 }}>
-        <TextBtn
-          text="Register"
-          onPress={() => {
-            setLoading(true);
-            login(
-              registerInput.current,
-              (resp) => {
-                setLoading(false);
-                setRegisterFailed(true);
-              },
-              (resp) => {
-                onRegister();
-                setRegisterFailed(false);
-                setLoading(false);
-                onClose();
-              }
-            );
-          }}
-          style={{ marginTop: 16, marginBottom: 32 }}
-        />
+      {/* Step: 1 */}
+      <View style={{ alignItems: 'center', width: '100%' }}>
+        <EmailInput onChangeText={updateEmail} validEmail={emailIsValid}/>
+        <PasswordInput label="Password" onChangeText={updatePassword} validPassword={passwordIsValid}/>
+        <PasswordInput label="Confirm Password" onChangeText={updateConfirmPassword} validPassword={passwordIsValid}/>
+        <ErrorMessage/>
+        <SubmitBtn text="Next" onSubmit={onSubmit}/>
       </View>
 
-    </ScrollView>
+      {/* Step: 2 */}
+      <View style={{ alignItems: 'center', width: '100%', marginLeft: (screen.width / 2) - 100 }}>
+        <InputText icon={UserIcon} label="First Name" placeholder="John"/>
+        <InputText icon={UserIcon} label="Last Name" placeholder="Smith"/>
+        <InputDate
+          label="Date of Birth"
+          onChangeDay={(d:string) => input.d = d}
+          onChangeMonth={(m:string) => input.m = m}
+          onChangeYear={(y:string) => input.y = y}
+        />
+        <ErrorMessage/>
+        <SubmitBtn text="Register" onSubmit={onSubmit}/>
+      </View>
+
+    </Animated.View>
   </FadeModal>
 }
 
