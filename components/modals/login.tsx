@@ -21,7 +21,7 @@ import InputText from '../inputs/text';
 import theme from '../../App.style';
 
 
-const LoginModal = ({ visible, onClose, onLogin } : any) => {
+const LoginModal = ({ visible, onClose, onLogin }) => {
   const [ isLoading, setLoading ] = useState<boolean>(false);
   const [ loginFailed, setLoginFailed ] = useState<boolean>(false);
   const loginInput = useRef<object>({

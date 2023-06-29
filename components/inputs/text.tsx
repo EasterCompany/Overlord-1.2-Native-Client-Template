@@ -2,7 +2,10 @@ import { View, Image, Text, TextInput } from 'react-native';
 import theme from '../../App.style';
 
 
-const InputText = ({ icon, label, placeholder, secureText, autoCapitalize, validInput, onChangeText } : any) => {
+const InputText = ({
+  icon, label, placeholder, secureText, maxLength,
+  autoCapitalize, validInput, onChangeText
+}) => {
   const borderHighlight = {
     borderColor: '#ffff',
     borderWidth: 0
@@ -19,6 +22,7 @@ const InputText = ({ icon, label, placeholder, secureText, autoCapitalize, valid
       <Text style={theme.loginInputLabel}>{label}</Text>
     </View>
     <TextInput
+      maxLength={maxLength}
       autoCapitalize={autoCapitalize ? 'characters' : 'none'}
       secureTextEntry={secureText}
       onChangeText={onChangeText}

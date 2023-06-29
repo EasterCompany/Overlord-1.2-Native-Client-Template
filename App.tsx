@@ -8,11 +8,12 @@ import {
   Dimensions,
   Platform
 } from 'react-native';
-import { USER, isLoggedIn, logout } from './shared/library/api';
+import { USER, isLoggedIn, logout, cookie } from './shared/library/api';
 // Components
 import Navbar from './components/header/navbar';
 import LoginModal from './components/modals/login';
 import RegisterModal from './components/modals/register';
+import UserModal from './components/modals/user';
 import SideMenu from './components/header/sideMenu';
 import NavMenuContent from './components/header/navMenuContent';
 // Views
@@ -25,24 +26,28 @@ const screenDimensions = Dimensions.get('screen');
 
 
 const App = () => {
-  const [userData, setUserData] = useState<any>(USER());
+  const [userData, setUserData] = useState(
+    Platform.OS === 'web' ?
+      USER() :
+      USER().then(value => setUserData(value))
+  );
   const [navMenu, setNavMenu] = useState<boolean>(false);
-  const [userMenu, setUserMenu] = useState<boolean>(false);
+  const [userModal, setUserModal] = useState<boolean>(false);
   const [loginModal, setLoginModal] = useState<boolean>(false);
   const [registerModal, setRegisterModal] = useState<boolean>(false);
   const [dimensions, setDimensions] = useState<any>({
     window: windowDimensions,
     view: {
       width: windowDimensions.width,
-      height: windowDimensions.height - 52
+      height: Platform.OS === 'ios' ? windowDimensions.height - 74 : windowDimensions.height - 52
     },
     screen: screenDimensions,
   });
 
-  const toggleNavMenu = () => {setNavMenu(!navMenu);setUserMenu(false);setLoginModal(false);setRegisterModal(false);}
-  const toggleUserMenu = () => {setUserMenu(!userMenu);setNavMenu(false);}
-  const toggleLoginModal = () => {setLoginModal(!loginModal);setNavMenu(false);setRegisterModal(false);}
-  const toggleRegisterModal = () => {setRegisterModal(!registerModal);setNavMenu(false);setLoginModal(false);}
+  const toggleNavMenu = () => {setNavMenu(!navMenu);}
+  const toggleUserModal = () => {setUserModal(!userModal);}
+  const toggleLoginModal = () => {setLoginModal(!loginModal);}
+  const toggleRegisterModal = () => {setRegisterModal(!registerModal);}
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({window, screen}) => {
@@ -62,7 +67,7 @@ const App = () => {
       <Navbar
         loginBtn={toggleLoginModal}
         registerBtn={toggleRegisterModal}
-        userBtn={toggleUserMenu}
+        userBtn={toggleUserModal}
         navBtn={toggleNavMenu}
         navMenuState={navMenu}
       />
@@ -71,20 +76,30 @@ const App = () => {
       <Home view={dimensions.view}/>
 
       {/* Modals & Overlays */}
-      {isLoggedIn() ? <></> : <>
+      {isLoggedIn() ? <>
+        <UserModal
+          user={userData}
+          visible={userModal}
+          onClose={toggleUserModal}
+        />
+        {navMenu && <SideMenu view={dimensions.view}>
+          <NavMenuContent/>
+        </SideMenu>}
+      </>
+      :
+      <>
         <LoginModal
           visible={loginModal}
           onClose={toggleLoginModal}
           onLogin={() => setUserData(USER())}
         />
         <RegisterModal
-          screen={dimensions.screen}
+          view={dimensions.view}
           visible={registerModal}
           onClose={toggleRegisterModal}
           onRegister={() => setUserData(USER())}
         />
       </>}
-      {navMenu ? <SideMenu window={dimensions.window}><NavMenuContent/></SideMenu> : <></>}
     </View>
   </>;
 };

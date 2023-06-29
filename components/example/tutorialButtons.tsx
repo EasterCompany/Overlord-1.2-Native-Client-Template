@@ -50,7 +50,7 @@ const Tutorial = () => <>
 </>;
 
 
-const LearnBtn = ({ text, link, png, svg } : any) => <LinkBtn
+const LearnBtn = ({ text, link, png, svg }) => <LinkBtn
   link={link}
   style={tutorial.linkBtn}
   onHover={{backgroundColor: 'rgba(175,175,175,0.2)'}}

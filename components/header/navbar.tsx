@@ -14,8 +14,8 @@ import RegisterBtn from '../../components/buttons/register';
 import navbar from './navbar.style';
 
 
-const Navbar = ({loginBtn, registerBtn, userBtn, navBtn, navMenuState}:any) => {
-  return isLoggedIn() ?       // Not logged in
+const Navbar = ({loginBtn, registerBtn, userBtn, navBtn, navMenuState}) => {
+  return isLoggedIn() ?
 
   <View style={navbar.container}>
     <ImgBtn
@@ -40,9 +40,12 @@ const Navbar = ({loginBtn, registerBtn, userBtn, navBtn, navMenuState}:any) => {
     />
   </View>
 
-  :                           // Is logged in
+  :
 
-  <View style={[ navbar.container, Platform.OS === 'web' ? { justifyContent: 'right' } : {} ]}>
+  <View style={[
+    navbar.container,
+    Platform.OS === 'web' ? { justifyContent: 'right' } : {},
+  ]}>
     <RegisterBtn onPress={registerBtn}/>
     { Platform.OS === 'web' ? <View style={{ marginLeft: 24 }} /> : <></> }
     <LoginBtn onPress={loginBtn}/>

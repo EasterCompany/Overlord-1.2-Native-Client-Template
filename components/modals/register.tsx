@@ -22,7 +22,7 @@ import { EmailInput, PasswordInput, SubmitBtn } from './login';
 import theme from '../../App.style';
 
 
-const RegisterModal = ({ view, visible, onClose, onRegister } : any) => {
+const RegisterModal = ({ view, visible, onClose, onRegister }) => {
   const [ isLoading, setLoading ] = useState<boolean>(false);
   const [ currentStep, setCurrentStep ] = useState<number>(1);
   const [ registerFailed, setRegisterFailed ] = useState<string>("");
@@ -43,7 +43,7 @@ const RegisterModal = ({ view, visible, onClose, onRegister } : any) => {
   useEffect(() => {
     if (emailIsValid && passwordIsValid) {
       Animated.timing(slideAnim, {
-        toValue: 0 - screen.width, duration: 750, useNativeDriver: false
+        toValue: 0 - view.width, duration: 750, useNativeDriver: false
       }).start()
       setCurrentStep(2);
     }
@@ -69,16 +69,32 @@ const RegisterModal = ({ view, visible, onClose, onRegister } : any) => {
   };
 
   const updateEmail = (text:string) => {
-    input.email = text; validateEmail();
+    setRegisterFailed(null);
+    input.email = text;
+    validateEmail();
   };
 
   const updatePassword = (text:string) => {
-    input.password = text; validatePasswords();
+    setRegisterFailed(null);
+    input.password = text;
+    validatePasswords();
   };
 
   const updateConfirmPassword = (text:string) => {
-    input.confirmPassword = text; validatePasswords();
+    setRegisterFailed(null);
+    input.confirmPassword = text;
+    validatePasswords();
   };
+
+  const updateFirstName = (text:string) => {
+    setRegisterFailed(null);
+    input.firstName = text;
+  }
+
+  const updateLastName = (text:string) => {
+    setRegisterFailed(null);
+    input.lastName = text;
+  }
 
   const onSubmit = () => {
     if (currentStep === 1) {
@@ -120,7 +136,7 @@ const RegisterModal = ({ view, visible, onClose, onRegister } : any) => {
     }
   }
 
-  const ErrorMessage = () => registerFailed.length > 0 ? <View style={theme.error}>
+  const ErrorMessage = () => registerFailed !== null && registerFailed.length > 0 ? <View style={theme.error}>
     <Text style={theme.error}>{registerFailed}</Text>
   </View> : <></>
 
@@ -131,7 +147,7 @@ const RegisterModal = ({ view, visible, onClose, onRegister } : any) => {
     <Animated.View style={{ flexDirection: 'row', left: slideAnim }}>
 
       {/* Step: 1 */}
-      <View style={{ alignItems: 'center', width: '100%' }}>
+      <View style={{ alignItems: 'center', width: view.width, left: view.width / 2 }}>
         <EmailInput onChangeText={updateEmail} validEmail={emailIsValid}/>
         <PasswordInput label="Password" onChangeText={updatePassword} validPassword={passwordIsValid}/>
         <PasswordInput label="Confirm Password" onChangeText={updateConfirmPassword} validPassword={passwordIsValid}/>
@@ -140,9 +156,9 @@ const RegisterModal = ({ view, visible, onClose, onRegister } : any) => {
       </View>
 
       {/* Step: 2 */}
-      <View style={{ alignItems: 'center', width: '100%', marginLeft: (screen.width / 2) - 100 }}>
-        <InputText icon={UserIcon} label="First Name" placeholder="John"/>
-        <InputText icon={UserIcon} label="Last Name" placeholder="Smith"/>
+      <View style={{ alignItems: 'center', width: view.width, left: view.width / 2 }}>
+        <InputText icon={UserIcon} label="First Name" placeholder="John" onChangeText={updateFirstName}/>
+        <InputText icon={UserIcon} label="Last Name" placeholder="Smith" onChangeText={updateLastName}/>
         <InputDate
           label="Date of Birth"
           onChangeDay={(d:string) => input.d = d}

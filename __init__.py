@@ -40,8 +40,6 @@ class Client(client.NativeClient):
     Generates a context dictionary which is provided to the HTML Template, each value can
     be rendered inside the index.html file by calling the key with {{ handle_bar }} variables.
     '''
-    page = self.current_view(req)
-    page_title = "Example 404 Page" if page == "404" else self.NAME
     return {
-      "page_title": page_title
+      "page_title": self.NAME
     }

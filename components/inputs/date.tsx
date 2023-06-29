@@ -1,4 +1,5 @@
 // Library
+import { useRef } from 'react';
 import { View, Image, Text, TextInput } from 'react-native';
 // Assets
 import CalendarIcon from '../../assets/images/calendar.png';
@@ -6,7 +7,10 @@ import CalendarIcon from '../../assets/images/calendar.png';
 import theme from '../../App.style';
 
 
-const InputDate = ({ label, textAlign, onChangeDay, onChangeMonth, onChangeYear, validInput } : any) => {
+const InputDate = ({ label, textAlign, onChangeDay, onChangeMonth, onChangeYear, validInput }) => {
+  const dayInput = useRef();
+  const monthInput = useRef();
+  const yearInput = useRef();
   const alignment = textAlign === undefined ? 'center' : textAlign;
 
   const borderHighlight = {
@@ -26,21 +30,54 @@ const InputDate = ({ label, textAlign, onChangeDay, onChangeMonth, onChangeYear,
     </View>
     <View style={{ flexDirection: 'row', width: '100%', height: '100%' }}>
       <TextInput
-        onChangeText={onChangeDay}
+        ref={dayInput}
+        maxLength={2}
+        blurOnSubmit={false}
+        returnKeyType="next"
+        keyboardType="numeric"
+        onSubmitEditing={() => monthInput.current.focus()}
+        onChangeText={(text) => {
+          dayInput.current.value = dayInput.current.value.replace(/\D/g,'');
+          onChangeDay(dayInput.current.value);
+          if (dayInput.current.value.length === 2) {
+            monthInput.current.focus();
+          }
+        }}
         placeholder="DD"
         placeholderTextColor= "#475569"
         style={[ theme.loginInput, borderHighlight, { textAlign: alignment, paddingLeft: 0 } ]}
       />
       <Text> / </Text>
       <TextInput
-        onChangeText={onChangeMonth}
+        ref={monthInput}
+        maxLength={2}
+        blurOnSubmit={false}
+        returnKeyType="next"
+        keyboardType="numeric"
+        onSubmitEditing={() => yearInput.current.focus()}
+        onChangeText={(text) => {
+          monthInput.current.value = monthInput.current.value.replace(/\D/g,'');
+          onChangeMonth(monthInput.current.value);
+          if (monthInput.current.value.length === 2) {
+            yearInput.current.focus();
+          }
+        }}
         placeholder="MM"
         placeholderTextColor= "#475569"
         style={[ theme.loginInput, borderHighlight, { textAlign: alignment, paddingLeft: 0 } ]}
       />
       <Text> / </Text>
       <TextInput
-        onChangeText={onChangeYear}
+        ref={yearInput}
+        maxLength={4}
+        blurOnSubmit={false}
+        returnKeyType="next"
+        keyboardType="numeric"
+        onSubmitEditing={() => {}}
+        onChangeText={(text) => {
+          yearInput.current.value = yearInput.current.value.replace(/\D/g,'');
+          onChangeYear(yearInput.current.value);
+        }}
         placeholder="YYYY"
         placeholderTextColor= "#475569"
         style={[ theme.loginInput, borderHighlight, { textAlign: alignment, paddingLeft: 0 } ]}

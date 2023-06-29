@@ -13,10 +13,10 @@ const NavMenuContent = () => <>
 </>;
 
 
-const Header = ({ text } : any) => <Text style={navMenu.header}>{text}</Text>;
+const Header = ({ text }) => <Text style={navMenu.header}>{text}</Text>;
 
 
-const Option = ({ text, link, last } : any) => <LinkBtn
+const Option = ({ text, link, last }) => <LinkBtn
   text={text}
   link={link}
   style={[ navMenu.option, { borderBottomWidth: last ? 1 : 0 } ]}

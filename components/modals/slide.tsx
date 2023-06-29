@@ -8,7 +8,7 @@ import ImgBtn from '../buttons/img';
 import theme from '../../App.style';
 
 
-const SlideModal = ({ title, visible, onClose, children } : any) => {
+const SlideModal = ({ title, visible, onClose, children }) => {
   const screen = Dimensions.get('screen');
   return <Modal
     animationType="slide"
@@ -17,7 +17,8 @@ const SlideModal = ({ title, visible, onClose, children } : any) => {
     onRequestClose={onClose}
   >
     <View style={{
-      top: Platform.OS === 'web' ? screen.height * 0.1 : 0,
+      top: Platform.OS === 'web' ? screen.height * 0.1 :
+        Platform.OS === 'ios' ? 22 : 0,
       height: Platform.OS === 'web' ? '70%' : '100%'
     }}>
       <View style={theme.modalHeader}>

@@ -5,7 +5,7 @@ import { Text, Pressable } from 'react-native';
 import theme from '../../App.style';
 
 
-const RegisterBtn = ({ onPress } : any) => {
+const RegisterBtn = ({ onPress }) => {
   return <Pressable onPress={onPress} style={[ theme.button, {
     alignItems: 'center',
     justifyContent: 'center',

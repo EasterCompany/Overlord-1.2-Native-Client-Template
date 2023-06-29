@@ -1,30 +1,42 @@
-import { ScrollView, View, Platform } from 'react-native'
+// Library
+import { useRef, useEffect } from 'react';
+import { ScrollView, View, Platform, Animated } from 'react-native'
 
 
-const SideMenu = ({ window, children } : any) => <View style={{
-  position: 'absolute',
-  alignItems: 'center',
-  justifyContent: 'center',
-  top: 52,
-  left: 0,
-  width: window.width,
-  height: window.height,
-  backgroundColor: 'rgba(0,0,0,.66)'
-}}>
-  <View style={{
+const SideMenu = ({ view, children }) => {
+  const slideAnim = useRef(new Animated.Value(-640)).current;
+
+  useEffect(() => {
+    Animated.timing(slideAnim, {
+      toValue: 0, duration: 333 , useNativeDriver: false
+    }).start()
+  }, [ slideAnim ])
+
+  return <View style={{
     position: 'absolute',
     alignItems: 'center',
-    top: 0,
+    justifyContent: 'center',
+    bottom: 0,
     left: 0,
-    width: Platform.OS === 'web' ? window.width * 0.5 : window.width,
-    minWidth: 300,
-    maxWidth: 640,
-    height: window.height,
-    backgroundColor: '#16161C'
+    width: view.width,
+    height: view.height,
+    backgroundColor: 'rgba(0,0,0,.66)'
   }}>
-    {children}
-  </View>
-</View>;
+    <Animated.View style={{
+      position: 'absolute',
+      alignItems: 'center',
+      bottom: 0,
+      left: slideAnim,
+      width: Platform.OS === 'web' ? view.width * 0.5 : view.width,
+      minWidth: 300,
+      maxWidth: 640,
+      height: view.height,
+      backgroundColor: '#16161C'
+    }}>
+      {children}
+    </Animated.View>
+  </View>;
+}
 
 
 export default SideMenu;

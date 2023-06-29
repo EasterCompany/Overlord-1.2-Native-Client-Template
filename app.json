@@ -6,10 +6,10 @@
     "orientation": "portrait",
     "icon": "./assets/images/logo_white.png",
     "userInterfaceStyle": "dark",
+    "backgroundColor": "#202029",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#202029"
+      "resizeMode": "contain"
     },
     "assetBundlePatterns": [
       "**/*"

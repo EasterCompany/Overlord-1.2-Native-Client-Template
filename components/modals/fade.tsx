@@ -8,7 +8,7 @@ import ImgBtn from '../buttons/img';
 import theme from '../../App.style';
 
 
-const FadeModal = ({ title, visible, onClose, style, children } : any) => {
+const FadeModal = ({ title, visible, onClose, style, children }) => {
   const screen = Dimensions.get('screen');
   return <Modal
   animationType="fade"

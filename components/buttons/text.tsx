@@ -5,7 +5,7 @@ import { Pressable, Text } from 'react-native';
 import theme from '../../App.style';
 
 
-const TextBtn = ({ text, onPress, style } : any) => {
+const TextBtn = ({ text, onPress, style }) => {
   const [ isHover, setHover ] = useState(false);
   const [ isPress, setPress ] = useState(false);
   return <Pressable
