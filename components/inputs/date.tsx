@@ -1,5 +1,5 @@
 // Library
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { View, Image, Text, TextInput } from 'react-native';
 // Assets
 import CalendarIcon from '../../assets/images/calendar.png';
@@ -7,11 +7,18 @@ import CalendarIcon from '../../assets/images/calendar.png';
 import theme from '../../App.style';
 
 
-const InputDate = ({ label, textAlign, onChangeDay, onChangeMonth, onChangeYear, validInput }) => {
+const InputDate = ({ label, textAlign, onChangeText, validInput }) => {
   const dayInput = useRef();
   const monthInput = useRef();
   const yearInput = useRef();
+  const [ currentDay, setDay ] = useState('');
+  const [ currentMonth, setMonth ] = useState('');
+  const [ currentYear, setYear ] = useState('');
   const alignment = textAlign === undefined ? 'center' : textAlign;
+
+  useEffect(() => {
+    onChangeText(`${currentDay}/${currentMonth}/${currentYear}`);
+  }, [ currentDay, currentMonth, currentYear, onChangeText ])
 
   const borderHighlight = {
     borderColor: '#ffff',
@@ -28,59 +35,63 @@ const InputDate = ({ label, textAlign, onChangeDay, onChangeMonth, onChangeYear,
       <Image source={CalendarIcon} resizeMode='contain' style={theme.loginInputIcon}/>
       <Text style={theme.loginInputLabel}>{label}</Text>
     </View>
-    <View style={{ flexDirection: 'row', width: '100%', height: '100%' }}>
+    <View style={[{
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      maxWidth: 420,
+      height: '100%',
+      marginTop: '-3.5%',
+    }, borderHighlight]}>
       <TextInput
         ref={dayInput}
         maxLength={2}
-        blurOnSubmit={false}
-        returnKeyType="next"
         keyboardType="numeric"
-        onSubmitEditing={() => monthInput.current.focus()}
         onChangeText={(text) => {
-          dayInput.current.value = dayInput.current.value.replace(/\D/g,'');
-          onChangeDay(dayInput.current.value);
-          if (dayInput.current.value.length === 2) {
-            monthInput.current.focus();
-          }
+          const numericText = text.replace(/\D/g,'');
+          setDay(numericText);
+          if (numericText.length === 2) monthInput.current.focus();
         }}
         placeholder="DD"
         placeholderTextColor= "#475569"
-        style={[ theme.loginInput, borderHighlight, { textAlign: alignment, paddingLeft: 0 } ]}
+        style={[
+          theme.loginInput,
+          { textAlign: alignment, paddingLeft: 0, width: '32%' }
+        ]}
       />
-      <Text> / </Text>
+      <Text style={{ fontWeight: 'bold' }}> / </Text>
       <TextInput
         ref={monthInput}
         maxLength={2}
-        blurOnSubmit={false}
-        returnKeyType="next"
         keyboardType="numeric"
-        onSubmitEditing={() => yearInput.current.focus()}
         onChangeText={(text) => {
-          monthInput.current.value = monthInput.current.value.replace(/\D/g,'');
-          onChangeMonth(monthInput.current.value);
-          if (monthInput.current.value.length === 2) {
-            yearInput.current.focus();
-          }
+          const numericText = text.replace(/\D/g,'');
+          setMonth(numericText);
+          if (numericText.length === 2) yearInput.current.focus();
         }}
         placeholder="MM"
         placeholderTextColor= "#475569"
-        style={[ theme.loginInput, borderHighlight, { textAlign: alignment, paddingLeft: 0 } ]}
+        style={[
+          theme.loginInput,
+          { textAlign: alignment, paddingLeft: 0, width: '32%' }
+        ]}
       />
-      <Text> / </Text>
+      <Text style={{ fontWeight: 'bold' }}> / </Text>
       <TextInput
         ref={yearInput}
         maxLength={4}
-        blurOnSubmit={false}
-        returnKeyType="next"
         keyboardType="numeric"
-        onSubmitEditing={() => {}}
         onChangeText={(text) => {
-          yearInput.current.value = yearInput.current.value.replace(/\D/g,'');
-          onChangeYear(yearInput.current.value);
+          const numericText = text.replace(/\D/g,'');
+          setYear(numericText);
         }}
         placeholder="YYYY"
         placeholderTextColor= "#475569"
-        style={[ theme.loginInput, borderHighlight, { textAlign: alignment, paddingLeft: 0 } ]}
+        style={[
+          theme.loginInput,
+          { textAlign: alignment, paddingLeft: 0, width: '32%' }
+        ]}
       />
     </View>
   </View>;

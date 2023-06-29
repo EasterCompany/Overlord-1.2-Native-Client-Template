@@ -1,6 +1,5 @@
 // Library
 import { View, Platform } from 'react-native';
-import { isLoggedIn } from '../../shared/library/api';
 // Assets
 import menuImg from '../../assets/images/menu.png';
 import userImg from '../../assets/images/user.png';
@@ -14,8 +13,8 @@ import RegisterBtn from '../../components/buttons/register';
 import navbar from './navbar.style';
 
 
-const Navbar = ({loginBtn, registerBtn, userBtn, navBtn, navMenuState}) => {
-  return isLoggedIn() ?
+const Navbar = ({loggedIn, loginBtn, registerBtn, userBtn, navBtn, navMenuState}) => {
+  return loggedIn ?
 
   <View style={navbar.container}>
     <ImgBtn

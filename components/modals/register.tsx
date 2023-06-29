@@ -35,9 +35,7 @@ const RegisterModal = ({ view, visible, onClose, onRegister }) => {
     confirmPassword: '',
     firstName: '',
     lastName: '',
-    d: '',
-    m: '',
-    y: ''
+    dateOfBirth: '',
   }).current;
 
   useEffect(() => {
@@ -130,7 +128,7 @@ const RegisterModal = ({ view, visible, onClose, onRegister }) => {
           password: input.password,
           first_name: input.firstName,
           last_name: input.lastName,
-          date_of_birth: `${input.d}/${input.m}/${input.y}`
+          date_of_birth: input.dateOfBirth
         }
       )
     }
@@ -159,12 +157,7 @@ const RegisterModal = ({ view, visible, onClose, onRegister }) => {
       <View style={{ alignItems: 'center', width: view.width, left: view.width / 2 }}>
         <InputText icon={UserIcon} label="First Name" placeholder="John" onChangeText={updateFirstName}/>
         <InputText icon={UserIcon} label="Last Name" placeholder="Smith" onChangeText={updateLastName}/>
-        <InputDate
-          label="Date of Birth"
-          onChangeDay={(d:string) => input.d = d}
-          onChangeMonth={(m:string) => input.m = m}
-          onChangeYear={(y:string) => input.y = y}
-        />
+        <InputDate label="Date of Birth" onChangeText={(text:string) => {input.dateOfBirth = text}}/>
         <ErrorMessage/>
         <SubmitBtn text="Register" onSubmit={onSubmit}/>
       </View>
