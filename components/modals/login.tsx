@@ -59,7 +59,12 @@ const LoginModal = ({ visible, onClose, onLogin }) => {
 
   return <FadeModal title="Existing User" visible={visible} onClose={onClose}>
     { isLoading ? <ActivityIndicator animating={isLoading} color="black"/> : <></> }
-    <Text style={[ theme.boldHeader, { userSelect: 'none', color: theme.alt.color, marginTop: 0 } ]}>Login</Text>
+    <Text style={[ theme.boldHeader, {
+      userSelect: 'none',
+      color: theme.alt.color,
+      marginTop: 0,
+      marginBottom: 32
+    }]}>Welcome back!</Text>
     <EmailInput onChangeText={onChangeEmail}/>
     <PasswordInput label="Password" onChangeText={onChangePassword}/>
     { loginFailed ? <LoginFailedErrorMessage/> : <></> }
@@ -71,7 +76,8 @@ const LoginModal = ({ visible, onClose, onLogin }) => {
 }
 
 
-export const EmailInput = ({ onChangeText, validEmail } : any) => <InputText
+export const EmailInput = ({ onChangeText, validEmail, ref } : any) => <InputText
+  ref={ref}
   icon={EmailIcon}
   label="Email"
   placeholder="john@example.com"
@@ -103,7 +109,12 @@ const LoginFailedErrorMessage = () => {
 
 
 export const SubmitBtn = ({text, onSubmit} : any) => {
-  return <TextBtn text={text} onPress={onSubmit} style={{ marginTop: 16, marginBottom: 32, maxWidth: 420 }}/>;
+  return <TextBtn text={text} onPress={onSubmit} style={{
+    marginTop: 16,
+    marginBottom: 32,
+    width: '95%',
+    maxWidth: 420,
+  }}/>;
 };
 
 

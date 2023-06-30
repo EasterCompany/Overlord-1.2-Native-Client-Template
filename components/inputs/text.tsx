@@ -4,7 +4,7 @@ import theme from '../../App.style';
 
 const InputText = ({
   icon, label, placeholder, secureText, maxLength,
-  autoCapitalize, validInput, onChangeText
+  autoCapitalize, validInput, onChangeText, ref
 }) => {
   const borderHighlight = {
     borderColor: '#ffff',
@@ -22,6 +22,7 @@ const InputText = ({
       <Text style={theme.loginInputLabel}>{label}</Text>
     </View>
     <TextInput
+      ref={ref}
       maxLength={maxLength}
       autoCapitalize={autoCapitalize ? 'characters' : 'none'}
       secureTextEntry={secureText}

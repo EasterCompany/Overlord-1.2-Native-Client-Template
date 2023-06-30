@@ -29,6 +29,7 @@ const RegisterModal = ({ view, visible, onClose, onRegister }) => {
   const [ emailIsValid, setEmailIsValid ] = useState(null);
   const [ passwordIsValid, setPasswordIsValid ] = useState(null);
   const slideAnim = useRef(new Animated.Value(0)).current;
+  const emailInput = useRef();
   const input = useRef<object>({
     email: '',
     password: '',
@@ -39,13 +40,19 @@ const RegisterModal = ({ view, visible, onClose, onRegister }) => {
   }).current;
 
   useEffect(() => {
-    if (emailIsValid && passwordIsValid) {
+    if (emailIsValid && passwordIsValid && currentStep === 1 && registerFailed.length === 0) {
       Animated.timing(slideAnim, {
         toValue: 0 - view.width, duration: 750, useNativeDriver: false
       }).start()
       setCurrentStep(2);
     }
-  }, [ slideAnim, emailIsValid, passwordIsValid ]);
+    if (currentStep === 2 && registerFailed === "Email address is already registered.") {
+      Animated.timing(slideAnim, {
+        toValue: 0, duration: 750, useNativeDriver: false
+      }).start()
+      setCurrentStep(1);
+    }
+  }, [ slideAnim, emailIsValid, passwordIsValid, registerFailed ]);
 
   const validateEmail = () => {
     if (input.email === '') return setEmailIsValid(null);
@@ -67,30 +74,25 @@ const RegisterModal = ({ view, visible, onClose, onRegister }) => {
   };
 
   const updateEmail = (text:string) => {
-    setRegisterFailed(null);
     input.email = text;
     validateEmail();
   };
 
   const updatePassword = (text:string) => {
-    setRegisterFailed(null);
     input.password = text;
     validatePasswords();
   };
 
   const updateConfirmPassword = (text:string) => {
-    setRegisterFailed(null);
     input.confirmPassword = text;
     validatePasswords();
   };
 
   const updateFirstName = (text:string) => {
-    setRegisterFailed(null);
     input.firstName = text;
   }
 
   const updateLastName = (text:string) => {
-    setRegisterFailed(null);
     input.lastName = text;
   }
 
@@ -101,18 +103,20 @@ const RegisterModal = ({ view, visible, onClose, onRegister }) => {
       else if (!passwordIsValid)
         return setRegisterFailed("Passwords must match & be greater than 8 characters in length.");
       else
-        setRegisterFailed(null);
-        return setCurrentStep(2);
+        setRegisterFailed("");
     } else if (currentStep === 2) {
       setLoading(true);
       oapi(
         'user/create',
-        (resp) => {setRegisterFailed(resp);setLoading(false);},
+        (resp) => {
+          setRegisterFailed(resp);
+          setLoading(false);
+        },
         (resp) => {
           login(
             (resp) => {
               setLoading(false);
-              setRegisterFailed("Sorry, there was a problem logging in.");
+              setRegisterFailed("Sorry, there was a unexpected server issue.");
             },
             (resp) => {
               onRegister();
@@ -140,13 +144,18 @@ const RegisterModal = ({ view, visible, onClose, onRegister }) => {
 
   return <FadeModal title="New Account" visible={visible} onClose={onClose}>
     { isLoading ? <ActivityIndicator animating={isLoading} color="black"/> : <></> }
-    <Text style={[ theme.boldHeader, { userSelect: 'none', color: theme.alt.color, marginTop: 0 } ]}>Sign Up</Text>
-    <Text style={[ theme.subtext ], { marginTop: '-2%', marginBottom: '2%' }}>({currentStep}/2)</Text>
+    <Text style={[ theme.boldHeader, {
+      userSelect: 'none',
+      color: theme.alt.color,
+      marginTop: 0,
+      marginBottom: 32
+    }]}>Sign Up</Text>
+    <Text style={[ theme.subtext ], { marginTop: -16, marginBottom: 32 }}>({currentStep}/2)</Text>
     <Animated.View style={{ flexDirection: 'row', left: slideAnim }}>
 
       {/* Step: 1 */}
       <View style={{ alignItems: 'center', width: view.width, left: view.width / 2 }}>
-        <EmailInput onChangeText={updateEmail} validEmail={emailIsValid}/>
+        <EmailInput onChangeText={updateEmail} validEmail={emailIsValid} ref={emailInput}/>
         <PasswordInput label="Password" onChangeText={updatePassword} validPassword={passwordIsValid}/>
         <PasswordInput label="Confirm Password" onChangeText={updateConfirmPassword} validPassword={passwordIsValid}/>
         <ErrorMessage/>

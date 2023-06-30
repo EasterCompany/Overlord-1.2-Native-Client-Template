@@ -85,6 +85,7 @@ const App = () => {
           <>
             <UserModal
               user={userData}
+              view={dimensions.view}
               visible={userModal}
               onClose={toggleUserModal}
               onLogout={reCheckUserData}

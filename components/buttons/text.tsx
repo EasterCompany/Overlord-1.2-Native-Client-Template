@@ -20,7 +20,12 @@ const TextBtn = ({ text, onPress, style }) => {
     onPressIn={() => setPress(true)}
     onPressOut={() => setPress(false)}
   >
-    <Text style={theme.buttonText}>{text}</Text>
+    <Text style={[
+      theme.buttonText,
+      style !== undefined && style.color !== undefined ? {
+        color: style.color,
+      } : {}
+    ]}>{text}</Text>
   </Pressable>;
 }
 
