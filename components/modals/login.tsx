@@ -32,12 +32,12 @@ const LoginModal = ({ visible, onClose, onLogin }) => {
   const onChangeEmail = (text:string) => {
     if (loginFailed) setLoginFailed(false);
     loginInput.current.email = text
-  }
+  };
 
   const onChangePassword = (text:string) => {
     if (loginFailed) setLoginFailed(false);
     loginInput.current.password = text;
-  }
+  };
 
   const onSubmit = () => {
     setLoading(true);
@@ -55,7 +55,7 @@ const LoginModal = ({ visible, onClose, onLogin }) => {
       loginInput.current.email,
       loginInput.current.password
     );
-  }
+  };
 
   return <FadeModal title="Existing User" visible={visible} onClose={onClose}>
     { isLoading ? <ActivityIndicator animating={isLoading} color="black"/> : <></> }
@@ -72,23 +72,24 @@ const LoginModal = ({ visible, onClose, onLogin }) => {
       <SubmitBtn text="Enter" onSubmit={onSubmit}/>
       <Pressable><Text style={theme.hyperlink}>Forgot Password?</Text></Pressable>
     </View>
-  </FadeModal>
-}
+  </FadeModal>;
+};
 
 
-export const EmailInput = ({ onChangeText, validEmail, ref } : any) => <InputText
+export const EmailInput = ({ label, onChangeText, validEmail, ref, autoComplete }) => <InputText
   ref={ref}
   icon={EmailIcon}
-  label="Email"
+  label={ label === undefined ? "Email" : label }
   placeholder="john@example.com"
   onChangeText={onChangeText}
   validInput={validEmail}
   secureText={false}
   autoCapitalize={false}
-/>
+  autoComplete={autoComplete}
+/>;
 
 
-export const PasswordInput = ({ label, onChangeText, validPassword } : any) => <InputText
+export const PasswordInput = ({ label, onChangeText, validPassword, autoComplete }) => <InputText
   icon={PasswordIcon}
   label={label}
   placeholder="**********"
@@ -96,7 +97,8 @@ export const PasswordInput = ({ label, onChangeText, validPassword } : any) => <
   validInput={validPassword}
   secureText={true}
   autoCapitalize={false}
-/>
+  autoComplete={autoComplete}
+/>;
 
 
 const LoginFailedErrorMessage = () => {
@@ -105,16 +107,16 @@ const LoginFailedErrorMessage = () => {
       Email or password may be incorrect, try again.
     </Text>
   </View>
-}
+};
 
 
-export const SubmitBtn = ({text, onSubmit} : any) => {
-  return <TextBtn text={text} onPress={onSubmit} style={{
+export const SubmitBtn = ({text, onSubmit, style}) => {
+  return <TextBtn text={text} onPress={onSubmit} style={[{
     marginTop: 16,
     marginBottom: 32,
     width: '95%',
     maxWidth: 420,
-  }}/>;
+  }, style]}/>;
 };
 
 

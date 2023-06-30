@@ -1,10 +1,11 @@
-import { View, Image, Text, TextInput } from 'react-native';
+import { View, Image, Text, TextInput, Platform } from 'react-native';
 import theme from '../../App.style';
 
 
 const InputText = ({
   icon, label, placeholder, secureText, maxLength,
-  autoCapitalize, validInput, onChangeText, ref
+  autoCapitalize, validInput, onChangeText, ref,
+  autoComplete
 }) => {
   const borderHighlight = {
     borderColor: '#ffff',
@@ -30,6 +31,7 @@ const InputText = ({
       placeholder={placeholder}
       placeholderTextColor= "#475569"
       style={[ theme.loginInput, borderHighlight ]}
+      autoComplete={autoComplete}
     />
   </View>;
 }

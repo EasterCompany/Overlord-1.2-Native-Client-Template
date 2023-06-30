@@ -85,6 +85,7 @@ const App = () => {
           <>
             <UserModal
               user={userData}
+              updateUser={(data) => setUserData(data)}
               view={dimensions.view}
               visible={userModal}
               onClose={toggleUserModal}

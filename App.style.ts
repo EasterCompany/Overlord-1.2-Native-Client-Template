@@ -23,7 +23,7 @@ const theme = StyleSheet.create({
   error: {
     color: '#ffff',
     textAlign: 'center',
-    backgroundColor: 'red',
+    backgroundColor: '#E53935',
     width: '95%',
     padding: 6,
     maxWidth: 420,
