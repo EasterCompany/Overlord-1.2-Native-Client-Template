@@ -2,7 +2,9 @@
 import { useState, useRef } from 'react';
 import { View, Text, Image, Platform } from 'react-native';
 import { logout, login, USER, oapi } from '../../shared/library/api';
+import * as ImagePicker from 'expo-image-picker';
 // Assets
+import UserIcon from '../../assets/images/user_black.png';
 import SuccessPNG from '../../assets/images/success.png';
 import SuccessSVG from '../../assets/svgs/success.svg';
 import WarningPNG from '../../assets/images/warning.png';
@@ -10,6 +12,7 @@ import WarningSVG from '../../assets/svgs/warning.svg';
 // Components
 import SlideModal from './slide';
 import TextBtn from '../buttons/text';
+import InputText from '../inputs/text';
 import { EmailInput, PasswordInput, SubmitBtn } from './login';
 // Styles
 import theme from '../../App.style';
@@ -19,6 +22,7 @@ const UserModal = ({ user, updateUser, view, visible, onClose, onLogout }) => {
   const [ currentView, setView ] = useState<string>('profile');
 
   const onPressLogout = () => logout().then(() => onLogout());
+  const onPressChangeDetails = () => setView('change-details');
   const onPressChangeEmail = () => setView('change-email');
   const onPressChangePassword = () => setView('change-password');
   const onPressDeleteAccount = () => setView('confirm-account-deletion');
@@ -41,9 +45,23 @@ const UserModal = ({ user, updateUser, view, visible, onClose, onLogout }) => {
     onClose={() => {onClose();setView('profile');}}
   >
     {
-      currentView === 'confirm-account-deletion' ? <ConfirmDeleteAccount user={user} onLogout={onPressLogout}/> :
-      currentView === 'change-password' ? <ChangePassword user={user} onDone={() => setView('profile')}/> :
-      currentView === 'change-email' ? <ChangeEmail user={user} onDone={onChangeEmail}/> :
+      currentView === 'change-details' ? <ChangeDetails
+        user={user}
+        onDone={() => setView('profile')}
+      /> :
+      currentView === 'change-email' ? <ChangeEmail
+        user={user}
+        onDone={onChangeEmail}
+        onCancel={() => setView('profile')}
+      /> :
+      currentView === 'change-password' ? <ChangePassword
+        user={user}
+        onDone={() => setView('profile')}
+      /> :
+      currentView === 'confirm-account-deletion' ? <ConfirmDeleteAccount
+        user={user}
+        onLogout={onPressLogout}
+      /> :
       <>
         <View style={bannerSection}>
           <View style={displayImage}/>
@@ -55,6 +73,7 @@ const UserModal = ({ user, updateUser, view, visible, onClose, onLogout }) => {
           <Text style={detailMinor}>Member Since: {user.dateJoined}</Text>
         </View>
         <View style={buttonSection}>
+          <TextBtn text="Change Details" onPress={onPressChangeDetails} style={button}/>
           <TextBtn text="Change Email" onPress={onPressChangeEmail} style={button}/>
           <TextBtn text="Change Password" onPress={onPressChangePassword} style={button}/>
           <TextBtn text="Logout" onPress={onPressLogout} style={button}/>
@@ -66,8 +85,67 @@ const UserModal = ({ user, updateUser, view, visible, onClose, onLogout }) => {
 }
 
 
-const ChangeEmail = ({ user, onDone }) => {
-  const [ successMessage, setSuccess ] = useState<boolean>(false);
+const ChangeDetails = ({ user, onDone }) => {
+  const [ errorMessage, setError ] = useState<string>("");
+  const [ displayImage, setDisplayImage ] = useState(null);
+  const input = useRef({
+    firstName: user.firstName,
+    middleNames: user.middleNames,
+    lastName: user.lastName
+  });
+
+  const onUpdateFirstName = (text) => {
+    input.current.firstName = text;
+    if (errorMessage.length > 0) setError("");
+  };
+  const onUpdateMiddleNames = (text) => {
+    input.current.middleNames = text;
+    if (errorMessage.length > 0) setError("");
+  };
+  const onUpdateLastName = (text) => {
+    input.current.lastName = text;
+    if (errorMessage.length > 0) setError("");
+  };
+  const onUpdateDisplayImage = async () => {
+    ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    }).then((result) => {
+      console.log(result);
+      if (!result.canceled) {
+        setDisplayImage(result.assets[0].uri);
+      };
+    })
+    if (errorMessage.length > 0) setError("");
+  };
+  const onSubmit = () => {};
+
+  return <View style={subView}>
+    <Text style={[theme.boldHeader, { color: theme.alt.color }]}>Change Details</Text>
+    {(user.displayImage || displayImage) && <Image
+      source={ displayImage ? {uri: displayImage} : user.displayImage }
+      style={{ marginTop: 8, marginBottom: 16, width: 132, height: 132, borderRadius: 48 }}
+    />}
+    <TextBtn text="Change Display Image" onPress={onUpdateDisplayImage} style={{
+      color: '#202029',
+      maxWidth: 420,
+      marginBottom: 16,
+      borderColor: '#202029',
+      backgroundColor: 'transparent'
+    }}/>
+    <InputText icon={UserIcon} label="First Name" placeholder={user.firstName} onChangeText={onUpdateFirstName}/>
+    <InputText icon={UserIcon} label="Middle Names" placeholder={user.middleNames} onChangeText={onUpdateMiddleNames}/>
+    <InputText icon={UserIcon} label="Last Name" placeholder={user.lastName} onChangeText={onUpdateLastName}/>
+    <ErrorMessage error={errorMessage}/>
+    <SubmitBtn text="Update" onSubmit={onSubmit} style={{ marginBottom: 16 }}/>
+    <SubmitBtn text="Cancel" onSubmit={onDone} style={{ marginTop: 0 }}/>
+  </View>;
+};
+
+
+const ChangeEmail = ({ user, onDone, onCancel }) => {
   const [ errorMessage, setError ] = useState<string>("");
   const input = useRef({
     email: '',
@@ -93,18 +171,13 @@ const ChangeEmail = ({ user, onDone }) => {
     }
   );
 
-  return <View style={{
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%'
-  }}>
+  return <View style={subView}>
     <Text style={[theme.boldHeader, { color: theme.alt.color }]}>Change Email</Text>
     <EmailInput label="New Email Address" autoComplete="email" onChangeText={onUpdateEmail}/>
     <PasswordInput label="Password" autoComplete="current-password" onChangeText={onUpdatePassword}/>
     <ErrorMessage error={errorMessage}/>
-    <SubmitBtn text="Update Email" onSubmit={onSubmit} style={{ marginBottom: 16 }}/>
-    <SubmitBtn text="Cancel" onSubmit={onDone} style={{ marginTop: 0 }}/>
+    <SubmitBtn text="Update" onSubmit={onSubmit} style={{ marginBottom: 16 }}/>
+    <SubmitBtn text="Cancel" onSubmit={onCancel} style={{ marginTop: 0 }}/>
   </View>;
 };
 
@@ -154,7 +227,7 @@ const ChangePassword = ({ user, onDone }) => {
       <PasswordInput label="New Password" autoComplete="new-password" onChangeText={onUpdateNew}/>
       <PasswordInput label="Confirm New Password" autoComplete="new-password" onChangeText={onUpdateConfirm}/>
       <ErrorMessage error={errorMessage}/>
-      <SubmitBtn text="Update Password" onSubmit={onSubmit} style={{ marginBottom: 16 }}/>
+      <SubmitBtn text="Update" onSubmit={onSubmit} style={{ marginBottom: 16 }}/>
       <SubmitBtn text="Cancel" onSubmit={onDone} style={{ marginTop: 0 }}/>
     </>
   }</View>;
@@ -176,13 +249,10 @@ const ConfirmDeleteAccount = ({ user, onLogout }) => {
     }
   );
 
-  return <View style={{
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-    backgroundColor: theme.error.backgroundColor
-  }}>
+  return <View style={[
+    subView,
+    {backgroundColor: theme.error.backgroundColor}
+  ]}>
     <Image
       resizeMode="contain"
       source={Platform.OS === 'web' ? WarningSVG : WarningPNG}
@@ -224,6 +294,13 @@ const userFullName = (user) => {
     `${user.firstName} ${user.lastName}`
 }
 
+
+const subView = {
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '100%',
+  minHeight: '100%'
+}
 
 const bannerSection = {
   top: 0,

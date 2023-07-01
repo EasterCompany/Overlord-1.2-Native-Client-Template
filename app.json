@@ -26,6 +26,15 @@
     "web": {
       "favicon": "./assets/images/logo_white.png",
       "publicPath": "/static/overlord_native_client"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "This app allows you to upload photos.",
+          "cameraPermission": "This app allows you to take & upload photos."
+        }
+      ]
+    ]
   }
 }
