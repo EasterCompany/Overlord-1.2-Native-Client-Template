@@ -29,6 +29,7 @@ build/
 web-build/
 node_modules/
 npm-debug.*
+yarn.lock
 package-lock.json
 *.tsbuildinfo
 *.log

@@ -1,14 +1,12 @@
 // Library
 import { useState, useRef } from 'react';
 import { View, Text, Image, Platform } from 'react-native';
-import { logout, login, USER, oapi } from '../../shared/library/api';
-import * as ImagePicker from 'expo-image-picker';
+import { __INIT_USER__, oapi, logout, deleteAllCookies } from '../../shared/library/api';
+import { launchImageLibraryAsync, MediaTypeOptions, UIImagePickerControllerQualityType } from 'expo-image-picker';
 // Assets
 import UserIcon from '../../assets/images/user_black.png';
 import SuccessPNG from '../../assets/images/success.png';
-import SuccessSVG from '../../assets/svgs/success.svg';
 import WarningPNG from '../../assets/images/warning.png';
-import WarningSVG from '../../assets/svgs/warning.svg';
 // Components
 import SlideModal from './slide';
 import TextBtn from '../buttons/text';
@@ -18,53 +16,53 @@ import { EmailInput, PasswordInput, SubmitBtn } from './login';
 import theme from '../../App.style';
 
 
-const UserModal = ({ user, updateUser, view, visible, onClose, onLogout }) => {
+const UserModal = ({ user, reCheckUserData, visible, onClose }) => {
   const [ currentView, setView ] = useState<string>('profile');
 
-  const onPressLogout = () => logout().then(() => onLogout());
+  const resetView = () => setView('profile');
+  const onPressLogout = () => logout().then(() => reCheckUserData());
   const onPressChangeDetails = () => setView('change-details');
   const onPressChangeEmail = () => setView('change-email');
   const onPressChangePassword = () => setView('change-password');
   const onPressDeleteAccount = () => setView('confirm-account-deletion');
-  const onChangeEmail = (input) => logout(true).then(() => login(
-    (resp) => {
-      alert(resp);
-    },
-    (resp) => {
-      USER().then((localData) => updateUser(localData));
-      setView('profile');
-    },
-    input.current.email,
-    input.current.password
-  ));
+  const onUpdateUserDetails = () => {refreshUser();resetView();};
+  const refreshUser = () => oapi(
+    "user/refresh",
+    (resp) => console.log(resp),
+    (resp) => __INIT_USER__(resp).then(() => reCheckUserData()),
+    { uuid: user.uuid, session: user.session }
+  );
 
   return <SlideModal
     title="My Profile"
-    style={{ alignItems: 'center', justifyContent: null }}
     visible={visible}
-    onClose={() => {onClose();setView('profile');}}
+    onClose={() => {onClose();resetView();}}
   >
     {
       currentView === 'change-details' ? <ChangeDetails
         user={user}
-        onDone={() => setView('profile')}
+        onDone={onUpdateUserDetails}
+        onCancel={resetView}
       /> :
       currentView === 'change-email' ? <ChangeEmail
         user={user}
-        onDone={onChangeEmail}
-        onCancel={() => setView('profile')}
+        onDone={onUpdateUserDetails}
+        onCancel={resetView}
       /> :
       currentView === 'change-password' ? <ChangePassword
         user={user}
-        onDone={() => setView('profile')}
+        onDone={resetView}
+        onCancel={resetView}
       /> :
       currentView === 'confirm-account-deletion' ? <ConfirmDeleteAccount
         user={user}
-        onLogout={onPressLogout}
+        onDone={onPressLogout}
+        onCancel={resetView}
       /> :
       <>
         <View style={bannerSection}>
-          <View style={displayImage}/>
+          <Image source={{uri: user.displayImage}} blurRadius={10} style={bannerImage}/>
+          <Image source={{uri: user.displayImage}} style={displayImage}/>
         </View>
         <View style={detailSection}>
           <Text style={detail}>{userFullName(user)}</Text>
@@ -85,9 +83,9 @@ const UserModal = ({ user, updateUser, view, visible, onClose, onLogout }) => {
 }
 
 
-const ChangeDetails = ({ user, onDone }) => {
+const ChangeDetails = ({ user, onDone, onCancel }) => {
   const [ errorMessage, setError ] = useState<string>("");
-  const [ displayImage, setDisplayImage ] = useState(null);
+  const [ newDisplayImage, setDisplayImage ] = useState(null);
   const input = useRef({
     firstName: user.firstName,
     middleNames: user.middleNames,
@@ -107,30 +105,40 @@ const ChangeDetails = ({ user, onDone }) => {
     if (errorMessage.length > 0) setError("");
   };
   const onUpdateDisplayImage = async () => {
-    ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+    launchImageLibraryAsync({
+      base64: true,
+      aspect: [1, 1],
       allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    }).then((result) => {
-      console.log(result);
-      if (!result.canceled) {
-        setDisplayImage(result.assets[0].uri);
-      };
-    })
+      mediaTypes: MediaTypeOptions.Images
+    }).then((result) => {if (!result.canceled) setDisplayImage(result.assets[0])})
     if (errorMessage.length > 0) setError("");
   };
-  const onSubmit = () => {};
+  const onSubmit = () => oapi(
+    "user/edit/details",
+    (resp) => setError(resp),
+    (resp) => onDone(),
+    {
+      uuid: user.uuid,
+      session: user.session,
+      first_name: input.current.firstName,
+      middle_names: input.current.middleNames,
+      last_name: input.current.lastName,
+      display_image: newDisplayImage ? newDisplayImage.base64 : undefined
+    }
+  );
 
   return <View style={subView}>
     <Text style={[theme.boldHeader, { color: theme.alt.color }]}>Change Details</Text>
-    {(user.displayImage || displayImage) && <Image
-      source={ displayImage ? {uri: displayImage} : user.displayImage }
-      style={{ marginTop: 8, marginBottom: 16, width: 132, height: 132, borderRadius: 48 }}
-    />}
+    {newDisplayImage ? <Image source={{uri: newDisplayImage.uri}} style={{
+      width: 132,
+      height: 132,
+      borderRadius: displayImage.borderRadius
+    }}/> : <></>}
     <TextBtn text="Change Display Image" onPress={onUpdateDisplayImage} style={{
       color: '#202029',
+      width: '95%',
       maxWidth: 420,
+      marginTop: 16,
       marginBottom: 16,
       borderColor: '#202029',
       backgroundColor: 'transparent'
@@ -140,7 +148,7 @@ const ChangeDetails = ({ user, onDone }) => {
     <InputText icon={UserIcon} label="Last Name" placeholder={user.lastName} onChangeText={onUpdateLastName}/>
     <ErrorMessage error={errorMessage}/>
     <SubmitBtn text="Update" onSubmit={onSubmit} style={{ marginBottom: 16 }}/>
-    <SubmitBtn text="Cancel" onSubmit={onDone} style={{ marginTop: 0 }}/>
+    <SubmitBtn text="Cancel" onSubmit={onCancel} style={{ marginTop: 0 }}/>
   </View>;
 };
 
@@ -163,7 +171,7 @@ const ChangeEmail = ({ user, onDone, onCancel }) => {
   const onSubmit = () => oapi(
     'user/edit/email',
     (resp) => setError(resp),
-    (resp) => onDone(input),
+    (resp) => onDone(),
     {
       uuid: user.uuid,
       new_email: input.current.email,
@@ -182,7 +190,7 @@ const ChangeEmail = ({ user, onDone, onCancel }) => {
 };
 
 
-const ChangePassword = ({ user, onDone }) => {
+const ChangePassword = ({ user, onDone, onCancel }) => {
   const [ successMessage, setSuccess ] = useState<boolean>(false);
   const [ errorMessage, setError ] = useState<string>("");
   const passwordInput = useRef({
@@ -228,20 +236,20 @@ const ChangePassword = ({ user, onDone }) => {
       <PasswordInput label="Confirm New Password" autoComplete="new-password" onChangeText={onUpdateConfirm}/>
       <ErrorMessage error={errorMessage}/>
       <SubmitBtn text="Update" onSubmit={onSubmit} style={{ marginBottom: 16 }}/>
-      <SubmitBtn text="Cancel" onSubmit={onDone} style={{ marginTop: 0 }}/>
+      <SubmitBtn text="Cancel" onSubmit={onCancel} style={{ marginTop: 0 }}/>
     </>
   }</View>;
 };
 
 
-const ConfirmDeleteAccount = ({ user, onLogout }) => {
+const ConfirmDeleteAccount = ({ user, onDone, onCancel }) => {
   const [ errorMessage, setError ] = useState<string>("");
   const passwordInput = useRef();
 
   const onConfirmDeleteAccount = () => oapi(
     'user/delete',
     (resp) => setError(resp),
-    (resp) => onLogout(),
+    (resp) => onDone(),
     {
       uuid: user.uuid,
       session: user.session,
@@ -254,8 +262,7 @@ const ConfirmDeleteAccount = ({ user, onLogout }) => {
     {backgroundColor: theme.error.backgroundColor}
   ]}>
     <Image
-      resizeMode="contain"
-      source={Platform.OS === 'web' ? WarningSVG : WarningPNG}
+      source={WarningPNG}
       style={{ width: 132, height: 132 }}
     />
     <Text style={[theme.boldHeader, { marginBottom: 0 } ]}>
@@ -268,14 +275,14 @@ const ConfirmDeleteAccount = ({ user, onLogout }) => {
     <PasswordInput label="Password" onChangeText={(text) => passwordInput.current = text}/>
     <ErrorMessage error={errorMessage}/>
     <SubmitBtn text="Delete Account" onSubmit={onConfirmDeleteAccount}/>
+    <SubmitBtn text="Cancel" onSubmit={onCancel}/>
   </View>
 }
 
 
 const SuccessfullyUpdated = ({ label, onDone }) => <>
   <Image
-    resizeMode="contain"
-    source={Platform.OS === 'web' ? SuccessSVG : SuccessPNG}
+    source={SuccessPNG}
     style={{ width: 132, height: 132 }}
   />
   <Text style={[theme.boldHeader, { color: theme.alt.color, marginBottom: 16 } ]}>{label}</Text>
@@ -297,7 +304,7 @@ const userFullName = (user) => {
 
 const subView = {
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'space-evenly',
   width: '100%',
   minHeight: '100%'
 }
@@ -307,8 +314,14 @@ const bannerSection = {
   width: '100%',
   height: '20%',
   marginBottom: 48,
-  backgroundColor: '#FE8605'
+  backgroundColor: '#202029'
 };
+
+const bannerImage = {
+  width: '100%',
+  height: '100%',
+  marginBottom: '-20%'
+}
 
 const displayImage = {
   width: 132,
@@ -318,6 +331,9 @@ const displayImage = {
   marginLeft: 'auto',
   marginRight: 'auto',
   borderRadius: 48,
+  borderWidth: 3,
+  borderColor: '#E5E7EB',
+  borderBottomWidth: 0,
   backgroundColor: '#202029'
 };
 
@@ -326,7 +342,7 @@ const detail = {
   textAlign: 'center',
   fontSize: 18,
   fontWeight: 500,
-  marginBottom: 8,
+  marginBottom: 6,
 };
 
 const detailMinor = {
@@ -334,7 +350,7 @@ const detailMinor = {
   textAlign: 'center',
   fontSize: 16,
   fontWeight: 400,
-  marginBottom: 8,
+  marginBottom: 6,
 };
 
 const detailSection = {
@@ -343,7 +359,7 @@ const detailSection = {
 
 const button = {
   color: '#202029',
-  height: 64,
+  height: 52,
   borderWidth: 0,
   borderBottomWidth: 2,
   borderRadius: 0,
@@ -353,14 +369,14 @@ const button = {
 
 const buttonSection = {
   width: '100%',
-  marginTop: 64,
+  marginTop: 48,
   borderTopWidth: 2,
   borderColor: 'rgba(25,25,25,.25)'
 };
 
 const deleteButton = {
   color: '#ffff',
-  height: 64,
+  height: 52,
   borderWidth: 0,
   borderBottomWidth: 2,
   borderRadius: 0,

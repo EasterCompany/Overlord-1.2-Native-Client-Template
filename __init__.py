@@ -17,13 +17,14 @@ class Client(client.NativeClient):
   # for example; this is often used to set the HTML <title> element content
   NAME:str = DIR
 
-  # Client.PORT by default will be automatically determined if PORT is None;
-  # otherwise you can specify a port as an integer.
-  PORT:int|None = None
-
   # Client.PWA is a boolean which indicates whether or not to enable
   # progressive web app features
-  PWA:bool = False
+  PWA:bool = True
+
+  # Client.API_DOMAIN is a string which tells the client where the api will be
+  # hosted in production. This is essential for native clients as they won't
+  # have a relative domain to access when deployed to Android/iOS.
+  API_DOMAIN:str = f"https://<your_domain_name_here>.com"
 
   def __init__(self) -> None:
     super().__init__()

@@ -13,16 +13,16 @@ import RegisterBtn from '../../components/buttons/register';
 import navbar from './navbar.style';
 
 
-const Navbar = ({loggedIn, loginBtn, registerBtn, userBtn, navBtn, navMenuState}) => {
+const Navbar = ({ loggedIn, onPressLogin, onPressRegister, onPressUser, onPressNav, navMenuOpen }) => {
   return loggedIn ?
 
   <View style={navbar.container}>
     <ImgBtn
       style={navbar.icon}
-      onPress={navBtn}
+      onPress={onPressNav}
       width={32}
       height={32}
-      image={navMenuState ? closeImg : menuImg}
+      image={navMenuOpen ? closeImg : menuImg}
     />
     <ImgBtn
       style={navbar.icon}
@@ -32,7 +32,7 @@ const Navbar = ({loggedIn, loginBtn, registerBtn, userBtn, navBtn, navMenuState}
     />
     <ImgBtn
       style={navbar.icon}
-      onPress={userBtn}
+      onPress={onPressUser}
       width={32}
       height={32}
       image={userImg}
@@ -45,9 +45,9 @@ const Navbar = ({loggedIn, loginBtn, registerBtn, userBtn, navBtn, navMenuState}
     navbar.container,
     Platform.OS === 'web' ? { justifyContent: 'right' } : {},
   ]}>
-    <RegisterBtn onPress={registerBtn}/>
+    <RegisterBtn onPress={onPressRegister}/>
     { Platform.OS === 'web' ? <View style={{ marginLeft: 24 }} /> : <></> }
-    <LoginBtn onPress={loginBtn}/>
+    <LoginBtn onPress={onPressLogin}/>
   </View>
 }
 

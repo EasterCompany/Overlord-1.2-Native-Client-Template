@@ -57,7 +57,7 @@ const SlideModal = ({ title, visible, style, onClose, children }) => {
             height: Platform.OS === 'web' ? '100%' : undefined,
             minHeight:
               Platform.OS === 'web' ? '70%' :
-              Platform.OS === 'ios' ? window.height - 74 : '%100'
+              Platform.OS === 'ios' ? window.height - 74 : '100%'
           },
           style
         ]}

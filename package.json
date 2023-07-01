@@ -14,14 +14,14 @@
     "@types/react": "~18.0.27",
     "env-cmd": "^10.1.0",
     "expo": "^48.0.19",
+    "expo-image-picker": "^14.1.1",
     "expo-status-bar": "^1.4.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.71.8",
     "react-native-dotenv": "^3.4.9",
     "react-native-web": "^0.18.10",
-    "typescript": "^4.9.4",
-    "expo-image-picker": "~14.1.1"
+    "typescript": "^4.9.4"
   },
   "private": true
 }

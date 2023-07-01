@@ -8,7 +8,7 @@ import {
   Dimensions,
   Platform
 } from 'react-native';
-import { USER } from './shared/library/api';
+import { __INIT_USER__, USER, logout, oapi } from './shared/library/api';
 // Components
 import Navbar from './components/header/navbar';
 import LoginModal from './components/modals/login';
@@ -26,12 +26,12 @@ const screenDimensions = Dimensions.get('screen');
 
 
 const App = () => {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(undefined);
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
-  const [navMenu, setNavMenu] = useState<boolean>(false);
-  const [userModal, setUserModal] = useState<boolean>(false);
-  const [loginModal, setLoginModal] = useState<boolean>(false);
-  const [registerModal, setRegisterModal] = useState<boolean>(false);
+  const [navMenuOpen, setNavMenu] = useState<boolean>(false);
+  const [userModalOpen, setUserModal] = useState<boolean>(false);
+  const [loginModalOpen, setLoginModal] = useState<boolean>(false);
+  const [registerModalOpen, setRegisterModal] = useState<boolean>(false);
   const [dimensions, setDimensions] = useState<any>({
     window: windowDimensions,
     view: {
@@ -41,27 +41,41 @@ const App = () => {
     screen: screenDimensions,
   });
 
-  useEffect(() => {
-    /* Acquire locally stored user data & automatically login */
-    if (userData === null) USER().then((localData) => {
-      setUserData(localData);
-      setUserIsLoggedIn(localData.session !== undefined);
-    })
-    /* Updates the screen, window & view size information when they change */
-    const subscription = Dimensions.addEventListener('change', ({window, screen}) => {
-      setDimensions({window, view: { width: window.width, height: window.height - 52 }, screen});
-    });
-    return () => subscription?.remove();
-  }, [ dimensions.window, dimensions.screen ]);
-
+  const toggleNavMenu = () => setNavMenu(!navMenuOpen);
+  const toggleUserModal = () => setUserModal(!userModalOpen);
+  const toggleLoginModal = () => setLoginModal(!loginModalOpen);
+  const toggleRegisterModal = () => setRegisterModal(!registerModalOpen);
   const reCheckUserData = () => USER().then((localData) => {
     setUserData(localData);
     setUserIsLoggedIn(localData.session !== undefined);
   });
-  const toggleNavMenu = () => setNavMenu(!navMenu);
-  const toggleUserModal = () => setUserModal(!userModal);
-  const toggleLoginModal = () => setLoginModal(!loginModal);
-  const toggleRegisterModal = () => setRegisterModal(!registerModal);
+
+  useEffect(() => {
+    // Refresh user data when reopening the app
+    if (userData === undefined) USER().then((localData) => {
+      setUserData(localData);
+      if (localData.session !== undefined) {
+        oapi(
+          "user/refresh",
+          (resp) => {
+            setUserData(null);
+            setUserIsLoggedIn(false);
+            logout();
+          },
+          (resp) => __INIT_USER__(resp).then(() => USER().then((newData) => {
+            setUserData(newData);
+            setUserIsLoggedIn(true);
+          })),
+          { uuid: localData.uuid, session: localData.session }
+        );
+      };
+    })
+    // Updates screen, window & viewport variables when the screen or window size changes
+    const subscription = Dimensions.addEventListener('change', ({window, screen}) => {
+      setDimensions({window, view: { width: window.width, height: window.height - 52 }, screen});
+    });
+    return () => subscription?.remove();
+  }, [ dimensions.window, dimensions.screen, userData ]);
 
   return <>
     <StatusBar barStyle={'light-content'} backgroundColor={'#202029'}/>
@@ -69,11 +83,11 @@ const App = () => {
       {/* GUI Elements */}
       <Navbar
         loggedIn={userIsLoggedIn}
-        loginBtn={toggleLoginModal}
-        registerBtn={toggleRegisterModal}
-        userBtn={toggleUserModal}
-        navBtn={toggleNavMenu}
-        navMenuState={navMenu}
+        onPressLogin={toggleLoginModal}
+        onPressRegister={toggleRegisterModal}
+        onPressUser={toggleUserModal}
+        onPressNav={toggleNavMenu}
+        navMenuOpen={navMenuOpen}
       />
 
       {/* Current View */}
@@ -85,26 +99,24 @@ const App = () => {
           <>
             <UserModal
               user={userData}
-              updateUser={(data) => setUserData(data)}
-              view={dimensions.view}
-              visible={userModal}
+              reCheckUserData={reCheckUserData}
+              visible={userModalOpen}
               onClose={toggleUserModal}
-              onLogout={reCheckUserData}
             />
-            {navMenu && <SideMenu view={dimensions.view}>
+            {navMenuOpen && <SideMenu view={dimensions.view}>
               <NavMenuContent/>
             </SideMenu>}
           </>
         :
           <>
             <LoginModal
-              visible={loginModal}
+              visible={loginModalOpen}
               onClose={toggleLoginModal}
               onLogin={reCheckUserData}
             />
             <RegisterModal
               view={dimensions.view}
-              visible={registerModal}
+              visible={registerModalOpen}
               onClose={toggleRegisterModal}
               onRegister={reCheckUserData}
             />
