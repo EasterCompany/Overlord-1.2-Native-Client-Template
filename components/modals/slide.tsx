@@ -17,7 +17,6 @@ import theme from '../../App.style';
 
 
 const SlideModal = ({ title, visible, style, onClose, children }) => {
-  const screen = Dimensions.get('screen');
   const window = Dimensions.get('window');
   return <Modal
   animationType="slide"
@@ -29,8 +28,8 @@ const SlideModal = ({ title, visible, style, onClose, children }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{
         top:
-          Platform.OS === 'web' ? screen.height * 0.1 :
-          Platform.OS === 'ios' ? 22 : 0,
+          Platform.OS === 'web' ? window.height * 0.1 :
+          Platform.OS === 'ios' ? 34 : 0,
         height:
           Platform.OS === 'web' ? '70%' : '100%'
       }}
@@ -40,10 +39,9 @@ const SlideModal = ({ title, visible, style, onClose, children }) => {
           {title}
         </Text>
         <ImgBtn
-          style={{ width: 64, height: 32, paddingLeft: 16 }}
           onPress={onClose}
-          width={32}
-          height={32}
+          width={34}
+          height={34}
           image={closeImg}
         />
       </View>
@@ -57,7 +55,7 @@ const SlideModal = ({ title, visible, style, onClose, children }) => {
             height: Platform.OS === 'web' ? '100%' : undefined,
             minHeight:
               Platform.OS === 'web' ? '70%' :
-              Platform.OS === 'ios' ? window.height - 74 : '100%'
+              Platform.OS === 'ios' ? window.height - 86 : '100%'
           },
           style
         ]}

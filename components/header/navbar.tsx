@@ -20,21 +20,21 @@ const Navbar = ({ loggedIn, onPressLogin, onPressRegister, onPressUser, onPressN
     <ImgBtn
       style={navbar.icon}
       onPress={onPressNav}
-      width={32}
-      height={32}
+      width={34}
+      height={34}
       image={navMenuOpen ? closeImg : menuImg}
     />
     <ImgBtn
       style={navbar.icon}
-      width={32}
-      height={32}
+      width={34}
+      height={34}
       image={logoImg}
     />
     <ImgBtn
       style={navbar.icon}
       onPress={onPressUser}
-      width={32}
-      height={32}
+      width={34}
+      height={34}
       image={userImg}
     />
   </View>

@@ -23,11 +23,14 @@ const theme = StyleSheet.create({
   error: {
     color: '#ffff',
     textAlign: 'center',
-    backgroundColor: '#E53935',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
     width: '95%',
     padding: 6,
     maxWidth: 420,
-    borderRadius: 4
+    borderRadius: 4,
+    backgroundColor: '#E53935'
   },
 
   loginInputContainer: {
@@ -92,16 +95,16 @@ const theme = StyleSheet.create({
     color: '#ffff',
     textAlign: 'center',
     fontWeight: 'normal',
-    margin: '4%',
-    fontSize: 32
+    marginBottom: 16,
+    fontSize: 24
   },
 
   boldHeader: {
     color: '#ffff',
     textAlign: 'center',
     fontWeight: 'bold',
-    margin: '4%',
-    fontSize: 32
+    marginBottom: 16,
+    fontSize: 24
   },
 
   subtext: {
@@ -177,9 +180,11 @@ const theme = StyleSheet.create({
     justifyContent: 'space-between',
     width: Platform.OS === 'web' ? '100%' : '100%',
     maxWidth: Platform.OS === 'web' ? 1024 : '100%',
-    height: 48,
+    height: 52,
     marginLeft: 'auto',
     marginRight: 'auto',
+    paddingLeft: 24,
+    paddingRight: 24,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
     backgroundColor: '#282C34',
@@ -189,7 +194,6 @@ const theme = StyleSheet.create({
   modalTitle: {
     color: '#ffff',
     fontSize: 22,
-    marginLeft: '2.5%',
     userSelect: 'none'
   },
 

@@ -72,7 +72,14 @@ const App = () => {
     })
     // Updates screen, window & viewport variables when the screen or window size changes
     const subscription = Dimensions.addEventListener('change', ({window, screen}) => {
-      setDimensions({window, view: { width: window.width, height: window.height - 52 }, screen});
+      setDimensions({
+        window,
+        view: {
+          width: window.width,
+          height: Platform === 'ios' ? window.height - 72 : window.height - 52
+        },
+        screen
+      });
     });
     return () => subscription?.remove();
   }, [ dimensions.window, dimensions.screen, userData ]);

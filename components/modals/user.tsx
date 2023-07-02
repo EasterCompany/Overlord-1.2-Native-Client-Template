@@ -19,13 +19,6 @@ import theme from '../../App.style';
 const UserModal = ({ user, reCheckUserData, visible, onClose }) => {
   const [ currentView, setView ] = useState<string>('profile');
 
-  const resetView = () => setView('profile');
-  const onPressLogout = () => logout().then(() => reCheckUserData());
-  const onPressChangeDetails = () => setView('change-details');
-  const onPressChangeEmail = () => setView('change-email');
-  const onPressChangePassword = () => setView('change-password');
-  const onPressDeleteAccount = () => setView('confirm-account-deletion');
-  const onUpdateUserDetails = () => {refreshUser();resetView();};
   const refreshUser = () => oapi(
     "user/refresh",
     (resp) => console.log(resp),
@@ -33,8 +26,20 @@ const UserModal = ({ user, reCheckUserData, visible, onClose }) => {
     { uuid: user.uuid, session: user.session }
   );
 
+  const resetView = () => setView('profile');
+  const onPressChangeDetails = () => setView('change-details');
+  const onPressChangeEmail = () => setView('change-email');
+  const onPressChangePassword = () => setView('change-password');
+  const onPressDeleteAccount = () => setView('confirm-account-deletion');
+  const onUpdateUserDetails = () => {refreshUser();resetView();};
+  const onPressLogout = () => logout().then(() => {
+    reCheckUserData();
+    resetView();
+    onClose();
+  });
+
   return <SlideModal
-    title="My Profile"
+    title="Profile"
     visible={visible}
     onClose={() => {onClose();resetView();}}
   >
@@ -56,7 +61,7 @@ const UserModal = ({ user, reCheckUserData, visible, onClose }) => {
       /> :
       currentView === 'confirm-account-deletion' ? <ConfirmDeleteAccount
         user={user}
-        onDone={onPressLogout}
+        onDone={resetView}
         onCancel={resetView}
       /> :
       <>
@@ -70,12 +75,12 @@ const UserModal = ({ user, reCheckUserData, visible, onClose }) => {
           <Text style={detailMinor}>Permissions: {user.permissions}</Text>
           <Text style={detailMinor}>Member Since: {user.dateJoined}</Text>
         </View>
-        <View style={buttonSection}>
-          <TextBtn text="Change Details" onPress={onPressChangeDetails} style={button}/>
-          <TextBtn text="Change Email" onPress={onPressChangeEmail} style={button}/>
-          <TextBtn text="Change Password" onPress={onPressChangePassword} style={button}/>
-          <TextBtn text="Logout" onPress={onPressLogout} style={button}/>
-          <TextBtn text="Delete Account" onPress={onPressDeleteAccount} style={deleteButton}/>
+        <View style={profileBtnSection}>
+          <TextBtn text="Change Details" onPress={onPressChangeDetails} style={profileBtn}/>
+          <TextBtn text="Change Email" onPress={onPressChangeEmail} style={profileBtn}/>
+          <TextBtn text="Change Password" onPress={onPressChangePassword} style={profileBtn}/>
+          <TextBtn text="Logout" onPress={onPressLogout} style={profileBtn}/>
+          <TextBtn text="Delete Account" onPress={onPressDeleteAccount} style={deleteAccountBtn}/>
         </View>
       </>
     }
@@ -144,11 +149,11 @@ const ChangeDetails = ({ user, onDone, onCancel }) => {
       backgroundColor: 'transparent'
     }}/>
     <InputText icon={UserIcon} label="First Name" placeholder={user.firstName} onChangeText={onUpdateFirstName}/>
-    <InputText icon={UserIcon} label="Middle Names" placeholder={user.middleNames} onChangeText={onUpdateMiddleNames}/>
+    <InputText icon={UserIcon} label="Middle Name(s)" placeholder={user.middleNames} onChangeText={onUpdateMiddleNames}/>
     <InputText icon={UserIcon} label="Last Name" placeholder={user.lastName} onChangeText={onUpdateLastName}/>
     <ErrorMessage error={errorMessage}/>
-    <SubmitBtn text="Update" onSubmit={onSubmit} style={{ marginBottom: 16 }}/>
-    <SubmitBtn text="Cancel" onSubmit={onCancel} style={{ marginTop: 0 }}/>
+    <SubmitBtn text="Update" onSubmit={onSubmit} style={formBtn}/>
+    <SubmitBtn text="Cancel" onSubmit={onCancel} style={formBtn}/>
   </View>;
 };
 
@@ -184,8 +189,8 @@ const ChangeEmail = ({ user, onDone, onCancel }) => {
     <EmailInput label="New Email Address" autoComplete="email" onChangeText={onUpdateEmail}/>
     <PasswordInput label="Password" autoComplete="current-password" onChangeText={onUpdatePassword}/>
     <ErrorMessage error={errorMessage}/>
-    <SubmitBtn text="Update" onSubmit={onSubmit} style={{ marginBottom: 16 }}/>
-    <SubmitBtn text="Cancel" onSubmit={onCancel} style={{ marginTop: 0 }}/>
+    <SubmitBtn text="Update" onSubmit={onSubmit} style={formBtn}/>
+    <SubmitBtn text="Cancel" onSubmit={onCancel} style={formBtn}/>
   </View>;
 };
 
@@ -235,8 +240,8 @@ const ChangePassword = ({ user, onDone, onCancel }) => {
       <PasswordInput label="New Password" autoComplete="new-password" onChangeText={onUpdateNew}/>
       <PasswordInput label="Confirm New Password" autoComplete="new-password" onChangeText={onUpdateConfirm}/>
       <ErrorMessage error={errorMessage}/>
-      <SubmitBtn text="Update" onSubmit={onSubmit} style={{ marginBottom: 16 }}/>
-      <SubmitBtn text="Cancel" onSubmit={onCancel} style={{ marginTop: 0 }}/>
+      <SubmitBtn text="Update" onSubmit={onSubmit} style={formBtn}/>
+      <SubmitBtn text="Cancel" onSubmit={onCancel} style={formBtn}/>
     </>
   }</View>;
 };
@@ -244,15 +249,14 @@ const ChangePassword = ({ user, onDone, onCancel }) => {
 
 const ConfirmDeleteAccount = ({ user, onDone, onCancel }) => {
   const [ errorMessage, setError ] = useState<string>("");
-  const passwordInput = useRef();
+  const passwordInput = useRef("");
 
   const onConfirmDeleteAccount = () => oapi(
     'user/delete',
     (resp) => setError(resp),
-    (resp) => onDone(),
+    (resp) => logout().then(onDone),
     {
       uuid: user.uuid,
-      session: user.session,
       password: passwordInput.current
     }
   );
@@ -270,12 +274,12 @@ const ConfirmDeleteAccount = ({ user, onDone, onCancel }) => {
       You're about to permanently delete your account.
     </Text>
     <Text style={[ theme.header, { marginTop: 0 } ]}>
-      There is no way to recover your account once it is deleted.
+      There is no way to recover your account once it has been deleted.
     </Text>
     <PasswordInput label="Password" onChangeText={(text) => passwordInput.current = text}/>
     <ErrorMessage error={errorMessage}/>
-    <SubmitBtn text="Delete Account" onSubmit={onConfirmDeleteAccount}/>
-    <SubmitBtn text="Cancel" onSubmit={onCancel}/>
+    <SubmitBtn text="Delete Account" onSubmit={onConfirmDeleteAccount} style={formBtn}/>
+    <SubmitBtn text="Cancel" onSubmit={onCancel} style={formBtn}/>
   </View>
 }
 
@@ -286,11 +290,11 @@ const SuccessfullyUpdated = ({ label, onDone }) => <>
     style={{ width: 132, height: 132 }}
   />
   <Text style={[theme.boldHeader, { color: theme.alt.color, marginBottom: 16 } ]}>{label}</Text>
-  <SubmitBtn text="Done" onSubmit={onDone}/>
+  <SubmitBtn text="Done" onSubmit={onDone} style={formBtn}/>
 </>
 
 
-const ErrorMessage = ({ error }) => error.length > 0 ? <View style={theme.error}>
+const ErrorMessage = ({ error }) => error.length > 0 ? <View style={[ theme.error, { marginBottom: 16 } ]}>
   <Text style={theme.error}>{error}</Text>
 </View> : <></>
 
@@ -304,7 +308,7 @@ const userFullName = (user) => {
 
 const subView = {
   alignItems: 'center',
-  justifyContent: 'space-evenly',
+  justifyContent: 'center',
   width: '100%',
   minHeight: '100%'
 }
@@ -357,7 +361,12 @@ const detailSection = {
   marginBottom: 'auto'
 };
 
-const button = {
+const formBtn = {
+  marginTop: 0,
+  marginBottom: 16
+}
+
+const profileBtn = {
   color: '#202029',
   height: 52,
   borderWidth: 0,
@@ -367,14 +376,14 @@ const button = {
   backgroundColor: 'transparent',
 };
 
-const buttonSection = {
+const profileBtnSection = {
   width: '100%',
   marginTop: 48,
   borderTopWidth: 2,
   borderColor: 'rgba(25,25,25,.25)'
 };
 
-const deleteButton = {
+const deleteAccountBtn = {
   color: '#ffff',
   height: 52,
   borderWidth: 0,
