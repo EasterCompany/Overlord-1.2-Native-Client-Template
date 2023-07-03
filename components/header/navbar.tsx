@@ -41,13 +41,22 @@ const Navbar = ({ loggedIn, onPressLogin, onPressRegister, onPressUser, onPressN
 
   :
 
-  <View style={[
-    navbar.container,
-    Platform.OS === 'web' ? { justifyContent: 'right' } : {},
-  ]}>
-    <RegisterBtn onPress={onPressRegister}/>
-    { Platform.OS === 'web' ? <View style={{ marginLeft: 24 }} /> : <></> }
-    <LoginBtn onPress={onPressLogin}/>
+  <View style={navbar.container}>
+    <ImgBtn
+      style={navbar.icon}
+      width={34}
+      height={34}
+      image={logoImg}
+    />
+    <View style={{
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      height: '100%',
+      width: 225
+    }}>
+      <RegisterBtn onPress={onPressRegister}/>
+      <LoginBtn onPress={onPressLogin}/>
+    </View>
   </View>
 }
 

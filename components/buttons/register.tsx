@@ -7,11 +7,8 @@ import theme from '../../App.style';
 
 const RegisterBtn = ({ onPress }) => {
   return <Pressable onPress={onPress} style={[ theme.button, {
-    alignItems: 'center',
-    justifyContent: 'center',
     width: 100,
-    height: 36,
-    borderWidth: 1,
+    height: '70%',
     backgroundColor: 'transparent'
   }]}>
     <Text style={theme.buttonText}>Sign Up</Text>

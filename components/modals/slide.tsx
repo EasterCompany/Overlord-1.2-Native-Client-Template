@@ -19,10 +19,10 @@ import theme from '../../App.style';
 const SlideModal = ({ title, visible, style, onClose, children }) => {
   const window = Dimensions.get('window');
   return <Modal
-  animationType="slide"
-  transparent={true}
-  visible={visible}
-  onRequestClose={onClose}
+    animationType="slide"
+    transparent={true}
+    visible={visible}
+    onRequestClose={onClose}
   >
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -31,7 +31,7 @@ const SlideModal = ({ title, visible, style, onClose, children }) => {
           Platform.OS === 'web' ? window.height * 0.1 :
           Platform.OS === 'ios' ? 34 : 0,
         height:
-          Platform.OS === 'web' ? '70%' : '100%'
+          Platform.OS === 'web' ? '75%' : '100%'
       }}
     >
       <View style={theme.modalHeader}>
@@ -54,8 +54,9 @@ const SlideModal = ({ title, visible, style, onClose, children }) => {
           {
             height: Platform.OS === 'web' ? '100%' : undefined,
             minHeight:
-              Platform.OS === 'web' ? '70%' :
-              Platform.OS === 'ios' ? window.height - 86 : '100%'
+              Platform.OS === 'ios' ? window.height - 86 :
+              Platform.OS === 'android' ? window.height - 72 :
+              '100%'
           },
           style
         ]}

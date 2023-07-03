@@ -65,8 +65,8 @@ const LoginModal = ({ visible, onClose, onLogin }) => {
       marginTop: 0,
       marginBottom: 32
     }]}>Welcome back!</Text>
-    <EmailInput onChangeText={onChangeEmail}/>
-    <PasswordInput label="Password" onChangeText={onChangePassword}/>
+    <EmailInput onChangeText={onChangeEmail} onPressEnter={onSubmit}/>
+    <PasswordInput label="Password" onChangeText={onChangePassword} onPressEnter={onSubmit}/>
     { loginFailed ? <LoginFailedErrorMessage/> : <></> }
     <View style={{ alignItems: 'center', width: '100%', maxWidth: 420 }}>
       <SubmitBtn text="Enter" onSubmit={onSubmit}/>
@@ -76,7 +76,7 @@ const LoginModal = ({ visible, onClose, onLogin }) => {
 };
 
 
-export const EmailInput = ({ label, onChangeText, validEmail, ref, autoComplete }) => <InputText
+export const EmailInput = ({ label, onChangeText, validEmail, ref, autoComplete, onPressEnter }) => <InputText
   ref={ref}
   icon={EmailIcon}
   label={ label === undefined ? "Email" : label }
@@ -86,10 +86,11 @@ export const EmailInput = ({ label, onChangeText, validEmail, ref, autoComplete 
   secureText={false}
   autoCapitalize={false}
   autoComplete={autoComplete}
+  onPressEnter={onPressEnter}
 />;
 
 
-export const PasswordInput = ({ label, onChangeText, validPassword, autoComplete }) => <InputText
+export const PasswordInput = ({ label, onChangeText, validPassword, autoComplete, onPressEnter }) => <InputText
   icon={PasswordIcon}
   label={label}
   placeholder="**********"
@@ -98,6 +99,7 @@ export const PasswordInput = ({ label, onChangeText, validPassword, autoComplete
   secureText={true}
   autoCapitalize={false}
   autoComplete={autoComplete}
+  onPressEnter={onPressEnter}
 />;
 
 

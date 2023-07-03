@@ -29,7 +29,6 @@ const RegisterModal = ({ view, visible, onClose, onRegister }) => {
   const [ emailIsValid, setEmailIsValid ] = useState(null);
   const [ passwordIsValid, setPasswordIsValid ] = useState(null);
   const slideAnim = useRef(new Animated.Value(0)).current;
-  const emailInput = useRef();
   const input = useRef<object>({
     email: '',
     password: '',
@@ -155,18 +154,48 @@ const RegisterModal = ({ view, visible, onClose, onRegister }) => {
 
       {/* Step: 1 */}
       <View style={{ alignItems: 'center', width: view.width, left: view.width / 2 }}>
-        <EmailInput onChangeText={updateEmail} validEmail={emailIsValid} ref={emailInput}/>
-        <PasswordInput label="Password" onChangeText={updatePassword} validPassword={passwordIsValid}/>
-        <PasswordInput label="Confirm Password" onChangeText={updateConfirmPassword} validPassword={passwordIsValid}/>
+        <EmailInput
+          onChangeText={updateEmail}
+          validEmail={emailIsValid}
+          onPressEnter={onSubmit}
+        />
+        <PasswordInput
+          label="Password"
+          onChangeText={updatePassword}
+          validPassword={passwordIsValid}
+          onPressEnter={onSubmit}
+        />
+        <PasswordInput
+          label="Confirm Password"
+          onChangeText={updateConfirmPassword}
+          validPassword={passwordIsValid}
+          onPressEnter={onSubmit}
+        />
         <ErrorMessage/>
         <SubmitBtn text="Next" onSubmit={onSubmit}/>
       </View>
 
       {/* Step: 2 */}
       <View style={{ alignItems: 'center', width: view.width, left: view.width / 2 }}>
-        <InputText icon={UserIcon} label="First Name" placeholder="John" onChangeText={updateFirstName}/>
-        <InputText icon={UserIcon} label="Last Name" placeholder="Smith" onChangeText={updateLastName}/>
-        <InputDate label="Date of Birth" onChangeText={(text:string) => {input.dateOfBirth = text}}/>
+        <InputText
+          icon={UserIcon}
+          label="First Name"
+          placeholder="John"
+          onChangeText={updateFirstName}
+          onPressEnter={onSubmit}
+        />
+        <InputText
+          icon={UserIcon}
+          label="Last Name"
+          placeholder="Smith"
+          onChangeText={updateLastName}
+          onPressEnter={onSubmit}
+        />
+        <InputDate
+          label="Date of Birth"
+          onChangeText={(text:string) => {input.dateOfBirth = text}}
+          onPressEnter={onSubmit}
+        />
         <ErrorMessage/>
         <SubmitBtn text="Register" onSubmit={onSubmit}/>
       </View>

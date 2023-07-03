@@ -7,7 +7,7 @@ import CalendarIcon from '../../assets/images/calendar.png';
 import theme from '../../App.style';
 
 
-const InputDate = ({ label, textAlign, onChangeText, validInput }) => {
+const InputDate = ({ label, textAlign, onChangeText, validInput, onPressEnter }) => {
   const dayInput = useRef();
   const monthInput = useRef();
   const yearInput = useRef();
@@ -59,6 +59,10 @@ const InputDate = ({ label, textAlign, onChangeText, validInput }) => {
           theme.loginInput,
           { textAlign: alignment, paddingLeft: 0, width: '32%' }
         ]}
+        onSubmitEditing={onPressEnter}
+        onKeyPress={({ nativeEvent }) => {
+          if (nativeEvent.key === 'Enter' && onPressEnter !== undefined) onPressEnter();
+        }}
       />
       <Text style={{ fontWeight: 'bold' }}> / </Text>
       <TextInput
@@ -76,6 +80,10 @@ const InputDate = ({ label, textAlign, onChangeText, validInput }) => {
           theme.loginInput,
           { textAlign: alignment, paddingLeft: 0, width: '32%' }
         ]}
+        onSubmitEditing={onPressEnter}
+        onKeyPress={({ nativeEvent }) => {
+          if (nativeEvent.key === 'Enter' && onPressEnter !== undefined) onPressEnter();
+        }}
       />
       <Text style={{ fontWeight: 'bold' }}> / </Text>
       <TextInput
@@ -92,6 +100,10 @@ const InputDate = ({ label, textAlign, onChangeText, validInput }) => {
           theme.loginInput,
           { textAlign: alignment, paddingLeft: 0, width: '32%' }
         ]}
+        onSubmitEditing={onPressEnter}
+        onKeyPress={({ nativeEvent }) => {
+          if (nativeEvent.key === 'Enter' && onPressEnter !== undefined) onPressEnter();
+        }}
       />
     </View>
   </View>;

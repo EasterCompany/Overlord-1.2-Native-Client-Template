@@ -7,10 +7,8 @@ import theme from '../../App.style';
 
 const LoginBtn = ({ onPress }) => {
   return <Pressable onPress={onPress} style={[ theme.button, {
-    alignItems: 'center',
-    justifyContent: 'center',
     width: 100,
-    height: 36
+    height: '70%'
   }]}>
     <Text style={theme.buttonText}>Login</Text>
   </Pressable>

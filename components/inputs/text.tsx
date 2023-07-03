@@ -5,7 +5,7 @@ import theme from '../../App.style';
 const InputText = ({
   icon, label, placeholder, secureText, maxLength,
   autoCapitalize, validInput, onChangeText, ref,
-  autoComplete
+  autoComplete, onPressEnter
 }) => {
   const borderHighlight = {
     borderColor: '#ffff',
@@ -32,6 +32,10 @@ const InputText = ({
       placeholderTextColor= "#475569"
       style={[ theme.loginInput, borderHighlight ]}
       autoComplete={autoComplete}
+      onSubmitEditing={onPressEnter}
+      onKeyPress={({ nativeEvent }) => {
+        if (nativeEvent.key === 'Enter' && onPressEnter !== undefined) onPressEnter();
+      }}
     />
   </View>;
 }

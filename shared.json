@@ -1,8 +1,9 @@
 {
   "path": "clients/overlord_native_client/shared",
   "file": [
-    "/library/api.ts",
-    "/library/devTools.ts"
+    "library/api.ts",
+    "library/devTools.ts",
+    "library/strings.ts"
   ],
   "module": []
 }

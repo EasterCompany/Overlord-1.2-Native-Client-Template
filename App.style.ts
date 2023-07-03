@@ -120,11 +120,11 @@ const theme = StyleSheet.create({
   */
 
   button: {
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
     height: 48,
-    padding: 6,
     borderWidth: 1,
     borderRadius: 6,
     borderColor: '#FE8605',
@@ -141,9 +141,12 @@ const theme = StyleSheet.create({
 
   buttonText: {
     userSelect: 'none',
+    textAlign: 'center',
     alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     color: '#ffff',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },

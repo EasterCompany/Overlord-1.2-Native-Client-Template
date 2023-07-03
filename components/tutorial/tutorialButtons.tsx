@@ -1,6 +1,6 @@
 // Library
-import { Text, View, Image, Platform, StyleSheet } from 'react-native';
 import { REACT_APP_NAME } from 'env';
+import { Text, View, Image, Platform, Dimensions, StyleSheet, } from 'react-native';
 // Assets
 import ReactPNG from '../../assets/images/react.png';
 import ReactSVG from '../../assets/svgs/react.svg';
@@ -16,31 +16,34 @@ import LinkBtn from '../buttons/link';
 
 const Tutorial = () => <>
   <View style={tutorial.headerSection}>
-    <View style={{ marginLeft: 18, marginRight: 18 }}>
+    <View style={tutorial.headerBackgroundImg}>
+      <Image resizeMode="contain" source={OverlordPNG} style={{ width: '100%', height: '100%' }}/>
+    </View>
+    <View style={tutorial.headerTitle}>
       <Text style={tutorial.welcomeText}>Welcome to your new Overlord Native Client,</Text>
       <Text style={tutorial.clientName}>{REACT_APP_NAME}</Text>
     </View>
   </View>
   <View style={tutorial.container}>
-    <LearnBtn
+    <LearnMoreBtn
       text="Learn Native"
       png={ReactPNG}
       svg={ReactSVG}
       link="https://reactnative.dev/docs/getting-started"
     />
-    <LearnBtn
+    <LearnMoreBtn
       text="Learn Overlord"
       png={OverlordPNG}
       svg={OverlordSVG}
       link="https://easter.company/overlord/getting_started"
     />
-    <LearnBtn
+    <LearnMoreBtn
       text="Learn AWS"
       png={AwsPNG}
       svg={AwsSVG}
       link="https://aws.amazon.com/free/compute/lightsail-vs-ec2/"
     />
-    <LearnBtn
+    <LearnMoreBtn
       text="Learn ePanel"
       png={ePanelPNG}
       svg={ePanelSVG}
@@ -50,36 +53,70 @@ const Tutorial = () => <>
 </>;
 
 
-const LearnBtn = ({ text, link, png, svg }) => <LinkBtn
-  link={link}
-  style={tutorial.linkBtn}
-  onHover={{backgroundColor: 'rgba(175,175,175,0.2)'}}
-  onPress={{opacity: '25%'}}
->
-  <Image source={Platform.OS === 'web' ? svg : png} style={tutorial.image}/>
-  <Text style={tutorial.text}>{text}</Text>
-</LinkBtn>
+const LearnMoreBtn = ({ text, link, png, svg }) => {
+  return <LinkBtn
+    link={link}
+    style={tutorial.linkBtn}
+    onHover={{
+      "background": "radial-gradient(farthest-corner at 40px 40px, rgba(75, 75, 75, 0.75) 0%, rgba(0, 0, 0, 0) 100%)"
+    }}
+    onPress={{opacity: '25%'}}
+  >
+    <Image
+      resizeMode="contain"
+      source={Platform.OS === 'web' ? svg : png}
+      style={tutorial.image}
+    />
+    <Text style={tutorial.text}>{text}</Text>
+  </LinkBtn>
+};
 
 
 const tutorial = StyleSheet.create({
 
   headerSection: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems:'center',
+    justifyContent:'center',
+    width: '100%',
+    height: '25%',
+    maxHeight: '25%'
+  },
+
+  headerBackgroundImg: {
+    zIndex: 0,
+    flex: 1,
+    position: 'absolute',
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-    marginBottom: 32
+    width: '100%',
+    height: '100%',
+    opacity: 0.1
+  },
+
+  headerTitle: {
+    zIndex: 1,
+    flex: 1,
+    position: 'absolute',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%'
   },
 
   welcomeText: {
     textAlign: 'center',
     color: '#ffff',
-    fontSize: 18,
+    fontSize: Platform.OS === 'web' ? 'calc(18px + 1.2vmin)' : 16
   },
 
   clientName: {
     textAlign: 'center',
     color: '#ffff',
-    fontSize: 24,
+    fontSize: Platform.OS === 'web' ? 'calc(26px + 1.2vmin)' : 24,
     fontWeight: 'bold',
     textTransform: 'uppercase'
   },
@@ -88,34 +125,36 @@ const tutorial = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-evenly',
+    width: Platform.OS === 'web' ? '75%' : '100%',
+    maxWidth: 1080
   },
 
   linkBtn: {
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
+    width: Platform.OS === 'web' ? '20vmin' : 150,
+    height: Platform.OS === 'web' ? '20vmin' : 150,
     margin: 16,
-    padding: 16,
-    width: 150,
-    height: 150,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: 'rgba(245,245,245,0.25)'
+    borderColor: 'rgba(175, 175, 175, 0.75)'
   },
 
   text: {
     userSelect: 'none',
-    color: '#ffff',
+    textAlign: 'center',
+    fontSize: Platform.OS === 'web' ? 'calc(6px + 1.2vmin)' : 14,
+    color: 'rgba(255,255,255,0.66)',
     marginTop: 16,
-    textAlign: 'center'
   },
 
   image: {
-    width: 75,
-    height: 75,
-    resizeMode: 'contain'
+    width: '100%',
+    height: '50%'
   }
 
-})
+});
 
 export default Tutorial;

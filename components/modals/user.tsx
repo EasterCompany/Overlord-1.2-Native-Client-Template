@@ -1,7 +1,7 @@
 // Library
 import { useState, useRef } from 'react';
 import { View, Text, Image, Platform } from 'react-native';
-import { __INIT_USER__, oapi, logout, deleteAllCookies } from '../../shared/library/api';
+import { __INIT_USER__, oapi, logout, deleteAllCookies, isLoggedIn } from '../../shared/library/api';
 import { launchImageLibraryAsync, MediaTypeOptions, UIImagePickerControllerQualityType } from 'expo-image-picker';
 // Assets
 import UserIcon from '../../assets/images/user_black.png';
@@ -21,7 +21,7 @@ const UserModal = ({ user, reCheckUserData, visible, onClose }) => {
 
   const refreshUser = () => oapi(
     "user/refresh",
-    (resp) => console.log(resp),
+    (resp) => {},
     (resp) => __INIT_USER__(resp).then(() => reCheckUserData()),
     { uuid: user.uuid, session: user.session }
   );
@@ -32,6 +32,12 @@ const UserModal = ({ user, reCheckUserData, visible, onClose }) => {
   const onPressChangePassword = () => setView('change-password');
   const onPressDeleteAccount = () => setView('confirm-account-deletion');
   const onUpdateUserDetails = () => {refreshUser();resetView();};
+  const onConfirmDeleteAccount = async () => {
+    await deleteAllCookies();
+    reCheckUserData();
+    resetView();
+    onClose();
+  }
   const onPressLogout = () => logout().then(() => {
     reCheckUserData();
     resetView();
@@ -61,7 +67,7 @@ const UserModal = ({ user, reCheckUserData, visible, onClose }) => {
       /> :
       currentView === 'confirm-account-deletion' ? <ConfirmDeleteAccount
         user={user}
-        onDone={resetView}
+        onDone={onConfirmDeleteAccount}
         onCancel={resetView}
       /> :
       <>
@@ -148,9 +154,27 @@ const ChangeDetails = ({ user, onDone, onCancel }) => {
       borderColor: '#202029',
       backgroundColor: 'transparent'
     }}/>
-    <InputText icon={UserIcon} label="First Name" placeholder={user.firstName} onChangeText={onUpdateFirstName}/>
-    <InputText icon={UserIcon} label="Middle Name(s)" placeholder={user.middleNames} onChangeText={onUpdateMiddleNames}/>
-    <InputText icon={UserIcon} label="Last Name" placeholder={user.lastName} onChangeText={onUpdateLastName}/>
+    <InputText
+      icon={UserIcon}
+      label="First Name"
+      placeholder={user.firstName}
+      onChangeText={onUpdateFirstName}
+      onPressEnter={onSubmit}
+    />
+    <InputText
+      icon={UserIcon}
+      label="Middle Name(s)"
+      placeholder={user.middleNames}
+      onChangeText={onUpdateMiddleNames}
+      onPressEnter={onSubmit}
+    />
+    <InputText
+      icon={UserIcon}
+      label="Last Name"
+      placeholder={user.lastName}
+      onChangeText={onUpdateLastName}
+      onPressEnter={onSubmit}
+    />
     <ErrorMessage error={errorMessage}/>
     <SubmitBtn text="Update" onSubmit={onSubmit} style={formBtn}/>
     <SubmitBtn text="Cancel" onSubmit={onCancel} style={formBtn}/>
@@ -186,8 +210,18 @@ const ChangeEmail = ({ user, onDone, onCancel }) => {
 
   return <View style={subView}>
     <Text style={[theme.boldHeader, { color: theme.alt.color }]}>Change Email</Text>
-    <EmailInput label="New Email Address" autoComplete="email" onChangeText={onUpdateEmail}/>
-    <PasswordInput label="Password" autoComplete="current-password" onChangeText={onUpdatePassword}/>
+    <EmailInput
+      label="New Email Address"
+      autoComplete="email"
+      onChangeText={onUpdateEmail}
+      onPressEnter={onSubmit}
+    />
+    <PasswordInput
+      label="Password"
+      autoComplete="current-password"
+      onChangeText={onUpdatePassword}
+      onPressEnter={onSubmit}
+    />
     <ErrorMessage error={errorMessage}/>
     <SubmitBtn text="Update" onSubmit={onSubmit} style={formBtn}/>
     <SubmitBtn text="Cancel" onSubmit={onCancel} style={formBtn}/>
@@ -236,9 +270,24 @@ const ChangePassword = ({ user, onDone, onCancel }) => {
   }}>{
     successMessage ? <SuccessfullyUpdated label="Changed password" onDone={onDone}/> : <>
       <Text style={[theme.boldHeader, { color: theme.alt.color }]}>Change Password</Text>
-      <PasswordInput label="Current Password" autoComplete="current-password" onChangeText={onUpdateCurrent}/>
-      <PasswordInput label="New Password" autoComplete="new-password" onChangeText={onUpdateNew}/>
-      <PasswordInput label="Confirm New Password" autoComplete="new-password" onChangeText={onUpdateConfirm}/>
+      <PasswordInput
+        label="Current Password"
+        autoComplete="current-password"
+        onChangeText={onUpdateCurrent}
+        onPressEnter={onSubmit}
+      />
+      <PasswordInput
+        label="New Password"
+        autoComplete="new-password"
+        onChangeText={onUpdateNew}
+        onPressEnter={onSubmit}
+      />
+      <PasswordInput
+        label="Confirm New Password"
+        autoComplete="new-password"
+        onChangeText={onUpdateConfirm}
+        onPressEnter={onSubmit}
+      />
       <ErrorMessage error={errorMessage}/>
       <SubmitBtn text="Update" onSubmit={onSubmit} style={formBtn}/>
       <SubmitBtn text="Cancel" onSubmit={onCancel} style={formBtn}/>
@@ -251,15 +300,10 @@ const ConfirmDeleteAccount = ({ user, onDone, onCancel }) => {
   const [ errorMessage, setError ] = useState<string>("");
   const passwordInput = useRef("");
 
-  const onConfirmDeleteAccount = () => oapi(
-    'user/delete',
-    (resp) => setError(resp),
-    (resp) => logout().then(onDone),
-    {
-      uuid: user.uuid,
-      password: passwordInput.current
-    }
-  );
+  const onConfirmDeleteAccount = () => oapi('user/delete', setError, onDone, {
+    uuid: user.uuid,
+    password: passwordInput.current
+  });
 
   return <View style={[
     subView,
@@ -276,7 +320,11 @@ const ConfirmDeleteAccount = ({ user, onDone, onCancel }) => {
     <Text style={[ theme.header, { marginTop: 0 } ]}>
       There is no way to recover your account once it has been deleted.
     </Text>
-    <PasswordInput label="Password" onChangeText={(text) => passwordInput.current = text}/>
+    <PasswordInput
+      label="Password"
+      onChangeText={(text) => passwordInput.current = text}
+      onPressEnter={onConfirmDeleteAccount}
+    />
     <ErrorMessage error={errorMessage}/>
     <SubmitBtn text="Delete Account" onSubmit={onConfirmDeleteAccount} style={formBtn}/>
     <SubmitBtn text="Cancel" onSubmit={onCancel} style={formBtn}/>
