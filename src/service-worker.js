@@ -20,7 +20,7 @@ clientsClaim();
 // This variable must be present somewhere in your service worker file,
 // even if you decide not to use precaching. See https://cra.link/PWA
 const urlsToCache = self.__WB_MANIFEST.map(entry => {
-  const url = entry.url.endsWith('index.html') ? `` : entry.url;
+  const url = entry.url.endsWith('index.html') ? "/" : entry.url;
   return { ...entry, url };
 });
 
