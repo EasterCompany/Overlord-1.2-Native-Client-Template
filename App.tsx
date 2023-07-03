@@ -9,7 +9,7 @@ import {
   Platform
 } from 'react-native';
 import { __INIT_USER__, USER, logout, oapi } from './shared/library/api';
-import * as serviceWorkerRegistration from './src/library/serviceWorkerRegistration';
+import * as serviceWorkerRegistration from './library/serviceWorkerRegistration';
 // Components
 import Navbar from './components/header/navbar';
 import LoginModal from './components/modals/login';
