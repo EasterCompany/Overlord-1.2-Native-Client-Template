@@ -24,7 +24,8 @@ export function register(config) {
   const isEnvProduction = process.env.NODE_ENV === "production";
   if (isEnvProduction && "serviceWorker" in navigator) {
     // The URL constructor is available in all browsers that support SW.
-    const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
+    const publicUrl = new URL("/", window.location.href);
+    console.log(publicUrl);
     if (publicUrl.origin !== window.location.origin) {
       // Our service worker won't work if PUBLIC_URL is on a different origin
       // from what our page is served on. This might happen if a CDN is used to
