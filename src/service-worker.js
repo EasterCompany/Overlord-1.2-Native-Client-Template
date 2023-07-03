@@ -43,7 +43,7 @@ registerRoute(
 
     return true;
   },
-  createHandlerBoundToURL(`${process.env.REACT_APP_ENDPOINT}`)
+  createHandlerBoundToURL(`${process.env.PUBLIC_URL}${process.env.REACT_APP_NAME}.app`)
 );
 
 // An example runtime caching route for requests that aren't handled by the
