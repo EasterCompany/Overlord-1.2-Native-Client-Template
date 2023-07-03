@@ -9,6 +9,7 @@ import {
   Platform
 } from 'react-native';
 import { __INIT_USER__, USER, logout, oapi } from './shared/library/api';
+import * as serviceWorkerRegistration from "./web/serviceWorkerRegistration.native";
 // Components
 import Navbar from './components/header/navbar';
 import LoginModal from './components/modals/login';
@@ -133,5 +134,9 @@ const App = () => {
   </>;
 };
 
+
+// Enable service worker if PWA mode is enabled
+if (process.env.REACT_APP_PWA) serviceWorkerRegistration.register();
+else serviceWorkerRegistration.unregister();
 
 export default App;
