@@ -24,7 +24,6 @@ const urlsToCache = self.__WB_MANIFEST.map(entry => {
   return { ...entry, url };
 });
 
-console.log(urlsToCache);
 precacheAndRoute(urlsToCache);
 
 // Set up App Shell-style routing, so that all navigation requests

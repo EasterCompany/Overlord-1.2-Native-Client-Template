@@ -95,6 +95,7 @@ const theme = StyleSheet.create({
     color: '#ffff',
     textAlign: 'center',
     fontWeight: 'normal',
+    marginTop: 32,
     marginBottom: 16,
     fontSize: 24
   },
@@ -103,6 +104,7 @@ const theme = StyleSheet.create({
     color: '#ffff',
     textAlign: 'center',
     fontWeight: 'bold',
+    marginTop: 32,
     marginBottom: 16,
     fontSize: 24
   },

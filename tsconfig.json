@@ -21,5 +21,8 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["*"]
+  "include": [
+    "*"
+  ],
+  "extends": "expo/tsconfig.base"
 }
