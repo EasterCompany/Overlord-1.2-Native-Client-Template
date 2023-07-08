@@ -8,7 +8,7 @@ import {
   Dimensions,
   Platform
 } from 'react-native';
-import { __INIT_USER__, USER, logout, oapi } from './shared/library/api';
+import { __INIT_USER__, USER, logout, oapi, isNative } from './shared/library/api';
 import * as serviceWorkerRegistration from "./src/serviceWorkerRegistration";
 // Components
 import Navbar from './components/header/navbar';
@@ -21,6 +21,14 @@ import NavMenuContent from './components/header/navMenuContent';
 import Home from './views/home';
 // Styles
 import theme from './App.style';
+
+/* Dev Mode Web Compatibility */
+if (!isNative) {
+  const docHead = document.querySelector('head') as HTMLElement;
+  if (docHead !== undefined && docHead !== null) docHead.style.display = 'hidden';
+  if (isTemplateTag.test(document.title) && process.env.REACT_APP_NAME !== undefined)
+    document.title = `[DEV] ${process.env.REACT_APP_NAME}`;
+};
 
 const windowDimensions = Dimensions.get('window');
 const screenDimensions = Dimensions.get('screen');
@@ -86,7 +94,7 @@ const App = () => {
   }, [ dimensions.window, dimensions.screen, userData ]);
 
   return <>
-    <StatusBar barStyle={'light-content'} backgroundColor={'#202029'}/>
+    <StatusBar barStyle="light-content" backgroundColor="#202029"/>
     <View>
       {/* GUI Elements */}
       <Navbar
