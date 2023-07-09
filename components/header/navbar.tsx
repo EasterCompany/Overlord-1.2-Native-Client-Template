@@ -18,24 +18,24 @@ const Navbar = ({ loggedIn, onPressLogin, onPressRegister, onPressUser, onPressN
 
   <View style={navbar.container}>
     <ImgBtn
-      style={navbar.icon}
-      onPress={onPressNav}
       width={34}
       height={34}
       image={navMenuOpen ? closeImg : menuImg}
+      style={navbar.icon}
+      onPress={onPressNav}
     />
     <ImgBtn
-      style={navbar.icon}
       width={34}
       height={34}
       image={logoImg}
+      style={navbar.icon}
     />
     <ImgBtn
-      style={navbar.icon}
-      onPress={onPressUser}
       width={34}
       height={34}
       image={userImg}
+      style={navbar.icon}
+      onPress={onPressUser}
     />
   </View>
 
@@ -43,13 +43,14 @@ const Navbar = ({ loggedIn, onPressLogin, onPressRegister, onPressUser, onPressN
 
   <View style={navbar.container}>
     <ImgBtn
-      style={navbar.icon}
       width={34}
       height={34}
       image={logoImg}
+      style={navbar.icon}
     />
     <View style={{
       flexDirection: 'row',
+      alignItems: 'center',
       justifyContent: 'space-between',
       height: '100%',
       width: 225

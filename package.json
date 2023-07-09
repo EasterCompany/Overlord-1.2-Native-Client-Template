@@ -38,7 +38,8 @@
     "workbox-routing": "^6.1.5",
     "workbox-strategies": "^6.1.5",
     "workbox-streams": "^6.1.5",
-    "workbox-webpack-plugin": "^6.1.5"
+    "workbox-webpack-plugin": "^6.1.5",
+    "expo-font": "~11.1.1"
   },
   "private": true
 }

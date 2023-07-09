@@ -5,11 +5,13 @@ const theme = StyleSheet.create({
   default: {
     color: '#ffff',
     backgroundColor: '#202029',
+    fontFamily: 'Metro'
   },
 
   alt: {
     color: '#202029',
-    backgroundColor: '#E5E7EB'
+    backgroundColor: '#E5E7EB',
+    fontFamily: 'Metro'
   },
 
   text: {
@@ -17,7 +19,8 @@ const theme = StyleSheet.create({
     textAlign: 'left',
     fontWeight: 300,
     margin: '2%',
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: 'Metro'
   },
 
   error: {
@@ -30,7 +33,8 @@ const theme = StyleSheet.create({
     padding: 6,
     maxWidth: 420,
     borderRadius: 4,
-    backgroundColor: '#E53935'
+    backgroundColor: '#E53935',
+    fontFamily: 'Metro'
   },
 
   loginInputContainer: {
@@ -65,7 +69,7 @@ const theme = StyleSheet.create({
   loginInputLabel: {
     userSelect: 'none',
     fontSize: 12,
-    fontWeight: 'bold'
+    fontFamily: 'Metro-Bold'
   },
 
   loginInput: {
@@ -79,7 +83,8 @@ const theme = StyleSheet.create({
     paddingTop: 28,
     paddingLeft: 16,
     borderRadius: 8,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    fontFamily: 'Metro'
   },
 
   hyperlink: {
@@ -88,7 +93,8 @@ const theme = StyleSheet.create({
     textAlign: 'left',
     fontWeight: '300',
     margin: '2%',
-    fontSize: 15
+    fontSize: 15,
+    fontFamily: 'Metro'
   },
 
   header: {
@@ -97,7 +103,8 @@ const theme = StyleSheet.create({
     fontWeight: 'normal',
     marginTop: 32,
     marginBottom: 16,
-    fontSize: 24
+    fontSize: 28,
+    fontFamily: 'Metro'
   },
 
   boldHeader: {
@@ -106,7 +113,8 @@ const theme = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 32,
     marginBottom: 16,
-    fontSize: 24
+    fontSize: 28,
+    fontFamily: 'Metro-Bold'
   },
 
   subtext: {
@@ -114,7 +122,8 @@ const theme = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 200,
     margin: '1%',
-    fontSize: 12
+    fontSize: 12,
+    fontFamily: 'Metro-Light'
   },
 
   /*
@@ -127,6 +136,8 @@ const theme = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: 48,
+    margin: 0,
+    padding: 0,
     borderWidth: 1,
     borderRadius: 6,
     borderColor: '#FE8605',
@@ -144,12 +155,15 @@ const theme = StyleSheet.create({
   buttonText: {
     userSelect: 'none',
     textAlign: 'center',
+    textAlignVertical: 'center',
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
     color: '#ffff',
-    fontSize: 15,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: 900,
+    fontFamily: 'Metro',
     textTransform: 'uppercase',
   },
 
@@ -176,7 +190,8 @@ const theme = StyleSheet.create({
     borderBottomLeftRadius: Platform.OS === 'web' ? 6 : 0,
     borderBottomRightRadius: Platform.OS === 'web' ? 6 : 0,
     backgroundColor: '#E5E7EB',
-    boxShadow: '1px 1px 10px rgba(0,0,0,.66)'
+    boxShadow: '1px 1px 10px rgba(0,0,0,.66)',
+    fontFamily: 'Metro'
   },
 
   modalHeader: {
@@ -193,13 +208,15 @@ const theme = StyleSheet.create({
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
     backgroundColor: '#282C34',
-    boxShadow: '1px 1px 10px rgba(0,0,0,.66)'
+    boxShadow: '1px 1px 10px rgba(0,0,0,.66)',
+    fontFamily: 'Metro'
   },
 
   modalTitle: {
+    userSelect: 'none',
     color: '#ffff',
     fontSize: 22,
-    userSelect: 'none'
+    fontFamily: 'Metro'
   },
 
 });

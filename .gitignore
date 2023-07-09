@@ -38,4 +38,4 @@ package-lock.json
 .DS_Store
 
 # Shared
-src/shared/*
+shared/*

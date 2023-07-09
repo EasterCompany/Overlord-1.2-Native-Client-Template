@@ -17,8 +17,10 @@ const header = StyleSheet.create({
   },
 
   icon: {
-    width: 28,
-    height: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 34,
+    height: 34,
   },
 
 });

@@ -394,15 +394,17 @@ const detail = {
   textAlign: 'center',
   fontSize: 18,
   fontWeight: 500,
-  marginBottom: 6,
+  fontFamily: 'Metro',
+  marginBottom: 12,
 };
 
 const detailMinor = {
   color: '#202029',
   textAlign: 'center',
   fontSize: 16,
-  fontWeight: 400,
-  marginBottom: 6,
+  fontWeight: 500,
+  fontFamily: 'Metro-Thin',
+  marginBottom: 12,
 };
 
 const detailSection = {

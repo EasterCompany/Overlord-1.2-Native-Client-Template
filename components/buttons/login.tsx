@@ -6,10 +6,7 @@ import theme from '../../App.style';
 
 
 const LoginBtn = ({ onPress }) => {
-  return <Pressable onPress={onPress} style={[ theme.button, {
-    width: 100,
-    height: '70%'
-  }]}>
+  return <Pressable onPress={onPress} style={[ theme.button, { width: 100, height: 34 }]}>
     <Text style={theme.buttonText}>Login</Text>
   </Pressable>
 }

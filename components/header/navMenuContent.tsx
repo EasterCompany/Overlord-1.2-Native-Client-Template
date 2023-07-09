@@ -32,6 +32,7 @@ const navMenu = StyleSheet.create({
     userSelect: 'none',
     color: 'rgba(200,200,200,1)',
     fontSize: 18,
+    fontFamily: 'Metro',
     marginTop: 32,
     marginLeft: 18,
     marginRight: 'auto',
@@ -59,7 +60,8 @@ const navMenu = StyleSheet.create({
   optionText: {
     userSelect: 'none',
     color: '#ffff',
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: 'Metro'
   }
 
 });

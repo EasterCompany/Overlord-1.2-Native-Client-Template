@@ -5,5 +5,7 @@
     "library/devTools.ts",
     "library/strings.ts"
   ],
-  "module": []
+  "module": [
+    "/assets/fonts/"
+  ]
 }

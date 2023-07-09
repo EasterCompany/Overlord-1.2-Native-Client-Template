@@ -1,15 +1,18 @@
 // Library
+import * as Font from 'expo-font';
 import { useState, useEffect } from 'react';
+import { isTemplateTag } from './shared/library/devTools';
+import * as serviceWorkerRegistration from "./src/serviceWorkerRegistration";
+import { __INIT_USER__, USER, logout, oapi, isNative } from './shared/library/api';
 import {
   View,
+  Text,
   ScrollView,
   StatusBar,
   StyleSheet,
   Dimensions,
   Platform
 } from 'react-native';
-import { __INIT_USER__, USER, logout, oapi, isNative } from './shared/library/api';
-import * as serviceWorkerRegistration from "./src/serviceWorkerRegistration";
 // Components
 import Navbar from './components/header/navbar';
 import LoginModal from './components/modals/login';
@@ -30,6 +33,18 @@ if (!isNative) {
     document.title = `[DEV] ${process.env.REACT_APP_NAME}`;
 };
 
+/* Load Custom Fonts */
+const loadCustomFonts = async () => {
+  return await Font.loadAsync({
+    'Metro': require('./shared/assets/fonts/Metropolis-Regular.otf'),
+    'Metro-Thin': require('./shared/assets/fonts/Metropolis-Thin.otf'),
+    'Metro-Bold': require('./shared/assets/fonts/Metropolis-Bold.otf'),
+    'Metro-Light': require('./shared/assets/fonts/Metropolis-Light.otf'),
+    'Metro-Italic': require('./shared/assets/fonts/Metropolis-RegularItalic.otf'),
+  });
+};
+
+/* Interfaces for Window & Screen Dimensions */
 const windowDimensions = Dimensions.get('window');
 const screenDimensions = Dimensions.get('screen');
 
@@ -60,6 +75,9 @@ const App = () => {
   });
 
   useEffect(() => {
+    // Loads Custom Fonts
+    loadCustomFonts();
+
     // Refresh user data when reopening the app
     if (userData === undefined) USER().then((localData) => {
       setUserData(localData);
@@ -79,6 +97,7 @@ const App = () => {
         );
       };
     })
+
     // Updates screen, window & viewport variables when the screen or window size changes
     const subscription = Dimensions.addEventListener('change', ({window, screen}) => {
       setDimensions({
@@ -90,6 +109,7 @@ const App = () => {
         screen
       });
     });
+
     return () => subscription?.remove();
   }, [ dimensions.window, dimensions.screen, userData ]);
 

@@ -110,14 +110,15 @@ const tutorial = StyleSheet.create({
   welcomeText: {
     textAlign: 'center',
     color: '#ffff',
-    fontSize: Platform.OS === 'web' ? 'calc(18px + 1.2vmin)' : 16
+    fontSize: Platform.OS === 'web' ? 'calc(18px + 1.2vmin)' : 16,
+    fontFamily: 'Metro'
   },
 
   clientName: {
     textAlign: 'center',
     color: '#ffff',
     fontSize: Platform.OS === 'web' ? 'calc(26px + 1.2vmin)' : 24,
-    fontWeight: 'bold',
+    fontFamily: 'Metro-Bold',
     textTransform: 'uppercase'
   },
 
@@ -146,6 +147,7 @@ const tutorial = StyleSheet.create({
     userSelect: 'none',
     textAlign: 'center',
     fontSize: Platform.OS === 'web' ? 'calc(6px + 1.2vmin)' : 14,
+    fontFamily: 'Metro',
     color: 'rgba(255,255,255,0.66)',
     marginTop: 16,
   },
